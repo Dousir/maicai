@@ -1,0 +1,55 @@
+<cu-custom bgColor="bg-gradual-green">
+  <view slot="content">豆森科技</view>
+</cu-custom>
+<view class="bg-img bg-mask padding-tb-xl" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg');height: 300rpx;">
+  <view class="padding-xl text-white">
+    <view class="padding-xs text-xl">
+      钢铁之翼
+    </view>
+    <view class="padding-xs">
+      Only the guilty need fear me.
+    </view>
+  </view>
+</view>
+<view class="VerticalBox">
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 375rpx)">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{commodityJsonList.goods}}" wx:for-index='index' wx:key wx:for-item="item" bindtap='tabSelect' data-id="{{index}}">
+     {{item.name}}
+    </view>
+  </scroll-view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 375rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+    <view class="padding-top padding-lr" wx:for="{{commodityJsonList.goods}}" wx:for-item="item" id="main-{{childIndex}}" wx:for-index='childIndex' wx:key>
+      <view class='cu-bar solid-bottom bg-white'>
+        <view class='action'>
+          <text class='cuIcon-title text-green'></text> {{item.name}} </view>
+      </view>
+      <view class="cu-list menu-avatar">
+        <view class="cu-item padding-bottom-xs" wx:for="{{item.foods}}" wx:key='key' wx:for-item='childItem' wx:key>
+          <view class="cu-avatar lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
+          <view class="content">
+            <view class="text-black">{{childItem.name}}</view>
+            <view class="text-gray text-sm flex">
+                月销{{childItem.sellCount}}
+            </view>
+            <view class='commodity-price'>
+                <text class="text-price text-red">{{childItem.price}}</text>
+                <view class='commodity-num'>
+                    <view wx:if="{{childItem.quantity>0}}">
+                        <button class="cu-btn round sm  icon" bindtap='commodityCut' data-pidx='{{childIndex}}' data-cidx='{{index}}'>
+                            <text class="cuIcon-move lg text-black"></text>
+                        </button>
+                    <text class='commodity-amount'>{{childItem.quantity}}</text>
+                    </view>
+                    <button class="cu-btn icon sm bg-green " bindtap="commodityAdd" data-pidx='{{childIndex}}' data-cidx='{{index}}'>
+                        <text class="cuIcon-add lg text-white"></text>
+                    </button>
+                </view>
+            </view>
+          </view>
+        </view>
+        
+      </view>
+      
+    </view>
+  </scroll-view>
+</view>
