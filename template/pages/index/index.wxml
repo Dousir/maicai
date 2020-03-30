@@ -25,7 +25,7 @@
       </view>
       <view class="cu-list menu-avatar">
         <view class="cu-item padding-bottom-xs" wx:for="{{item.foods}}" wx:key='key' wx:for-item='childItem' wx:key>
-          <view class="cu-avatar lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
+          <view class="cu-avatar  lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
           <view class="content">
             <view class="text-black">{{childItem.name}}</view>
             <view class="text-gray text-sm flex">
@@ -40,7 +40,7 @@
                         </button>
                     <text class='commodity-amount'>{{childItem.quantity}}</text>
                     </view>
-                    <button class="cu-btn icon sm bg-green " bindtap="commodityAdd" data-pidx='{{childIndex}}' data-cidx='{{index}}'>
+                    <button class="cu-btn icon sm bg-olive " bindtap="commodityAdd" data-pidx='{{childIndex}}' data-cidx='{{index}}'>
                         <text class="cuIcon-add lg text-white"></text>
                     </button>
                 </view>
@@ -50,4 +50,59 @@
       </view>
     </view>
   </scroll-view>
+</view>
+<view class="shopcart-box clearfix">
+  <view class="contact-merchant f_l">
+    <text class="cuIcon-phone contact-merchant-icon"></text>
+    <text class="contact-merchant-text">联系商家</text>
+  </view>
+  <view class='total-price f_l'>
+    <view class="shopcart-icon f-l" bindtap="showModal" data-target="bottomModal">
+      <text class="cuIcon-cartfill cuIcon-cartfill-icon"></text>
+    </view>
+    <view class="f_l shopcart-text-box">
+      <text class="total-price-text text-price text-red">70</text>
+      <text class="deliveryFee-text">另需配送费<text class="text-price text-red">2</text></text>
+    </view>
+  </view>
+  <view  class="cu-btn f_l  shopcart-pay-btn bg-green button-hover">去支付</view>
+  
+  <view class="cu-modal bottom-modal {{modalName=='bottomModal'?'show':''}}" bindtap="hideModal">
+    <view class="cu-dialog">
+      <view class="shopcart-main-box">
+        <view class="shopcart-main-title solid-bottom">
+          <view class="">
+            <text class="shopcart-main-title1">购物车</text>
+            <text class="shopcart-main-title2">(共计 2 件商品)</text>
+          </view>
+          <view class="clearshopcart">
+            <text class="cuIcon-delete clearshopcart-icon"></text>
+            <text class="clearshopcart-text">清空购物车</text>
+          </view>
+        </view>
+        <scroll-view class="shopcart-main-list-box" scroll-y scroll-with-animation>
+          <view class="cu-item padding-bottom-xs shopcart-main-list solid-bottom" >
+            <view class="shopcart-main-list-img" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big10001.jpg);"></view>
+            <view class="content shopcart-main-list-content">
+              <view class="text-black shopcart-main-list-content-black">123123123</view>
+              <view class='commodity-price shopcart-main-list-content-price'>
+                  <text class="text-price text-red">20</text>
+                  <view class='commodity-num'>
+                      <view>
+                          <button class="cu-btn round sm  icon" bindtap=''>
+                              <text class="cuIcon-move lg text-black"></text>
+                          </button>
+                      <text class='commodity-amount'>0</text>
+                      </view>
+                      <button class="cu-btn icon sm bg-olive " bindtap="commodityAdd" >
+                          <text class="cuIcon-add lg text-white"></text>
+                      </button>
+                  </view>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </view>
 </view>

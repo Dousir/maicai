@@ -1,3 +1,5 @@
+.f_l{float:left}.f_r{float:right}.none{display:none}.block{display:block}.clear{clear:both}.clearfix:after{clear:both;visibility:hidden;height:0;content:"";display:block}
+
 .header-box{
     display: flex;
 
@@ -6,6 +8,7 @@
 .VerticalNav.nav {
   width: 200rpx;
   white-space: initial;
+  padding-bottom: 140rpx
 }
 
 .VerticalNav.nav .cu-item {
@@ -38,6 +41,7 @@
 }
 .VerticalMain{
   background-color: #f1f1f1;
+  padding-bottom: 140rpx;
 }
 .commodity-price{
     display: flex;
@@ -48,4 +52,107 @@
 }
 .commodity-amount{
     margin: 0 10rpx;
+}
+.shopcart-box{
+  position: fixed;
+  width: 90%;
+  bottom: 30rpx;
+  margin: 0 5% 0 5%;
+  z-index: 9999;
+}
+.contact-merchant{
+  display: flex;
+  flex-direction: column;
+  background:#010101 ;
+  border-radius: 100rpx 10rpx 10rpx 100rpx;
+  text-align: center;
+  padding: 10rpx 0;
+  width: 20%;
+  margin-right: 0.5%;
+  height: 100rpx;
+}
+.contact-merchant-icon{
+  color:#fff ;
+  font-size:40rpx;
+}
+.contact-merchant-text{
+  color: #B5B2B0;
+  font-size: 20rpx;
+}
+.total-price{
+  display: flex;
+  height: 100rpx;
+  width: 79.5%;
+}
+.shopcart-text-box{
+  display: flex;
+  flex-direction: column;
+  margin-left: 10rpx;
+}
+.total-price{
+  background:#010101;
+  padding: 10rpx 0 10rpx 20rpx;
+  flex: 2;
+  border-radius: 0 100rpx 100rpx 0;
+}
+.total-price-text{
+  color: #fff;
+  font-size: 40rpx;
+}
+.shopcart-icon{
+  display: flex;
+  align-items: center;     
+}
+.cuIcon-cartfill-icon{
+  color: #fff;
+  font-size: 55rpx;
+}
+.deliveryFee-text{
+  color: #494949;
+  font-size: 22rpx;
+}
+.shopcart-pay-btn{
+  position: absolute;
+  flex: 1;
+  height: 100rpx;
+  width: 25%;
+  border-radius: 0 100rpx 100rpx 0;
+  right: 0;
+  top: -1rpx;
+}
+.cu-modal{
+  z-index: -1;
+}
+.shopcart-main-box{
+  padding-bottom: 162rpx;
+}
+.shopcart-main-list-box{
+  max-height: 414rpx;
+  min-height: 200rpx;
+  padding: 10rpx;
+}
+.shopcart-main-title{
+  display: flex;
+  justify-content: space-between;
+  padding:  10rpx 20rpx;
+}
+.clearshopcart-text{
+  color: #666;
+  font-size: 24rpx;
+}
+.clearshopcart-icon{margin-right: 10rpx;}
+.shopcart-main-title1{
+  font-weight: bold;
+  font-size: 28rpx;
+  color: #333;
+}
+.shopcart-main-title2{
+  color: #999;
+  margin-left: 10rpx;
+  font-size:20rpx;
+}
+.shopcart-main-list{display: flex;}
+.shopcart-main-list-img{
+  width: 120rpx;
+  height: 120rpx;
 }

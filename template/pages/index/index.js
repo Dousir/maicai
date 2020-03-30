@@ -11,7 +11,8 @@ Page({
         list: [],
         load: true,
         commodityAmount:0,    //菜品数量
-        commodityJsonList:{}
+        commodityJsonList:{},
+        modalName:'bottomModal'
     },
     onLoad() {
         wx.showLoading({
@@ -73,6 +74,17 @@ Page({
         newcommodityJsonList = oldcommodityJsonList;
         this.setData({
             commodityJsonList:newcommodityJsonList
+        })
+    },
+    showModal(e) {
+        console.log(e.currentTarget.dataset.target)
+        this.setData({
+            modalName: e.currentTarget.dataset.target
+        })
+    },
+    hideModal(e) {
+        this.setData({
+            modalName: null
         })
     },
     VerticalMain(e) {

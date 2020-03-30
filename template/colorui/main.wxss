@@ -957,8 +957,8 @@ button.icon.lg {
 }
 
 .cu-avatar.lg {
-	width: 120rpx;
-	height: 120rpx;
+	width: 140rpx;
+	height: 140rpx;
 	font-size: 2em;
 }
 
@@ -1270,7 +1270,7 @@ button.icon.lg {
 	position: relative;
 	display: flex;
 	padding-right: 10rpx;
-	height: 160rpx;
+	height: 170rpx;
 	background-color: var(--white);
 	justify-content: flex-end;
 	align-items: center
@@ -1287,8 +1287,8 @@ button.icon.lg {
 
 .cu-list.menu-avatar>.cu-item .content {
 	position: absolute;
-	left: 170rpx;
-	width: calc(100% - 96rpx - 60rpx - 20rpx );
+	left: 185rpx;
+	width: calc(100% - 96rpx - 60rpx - 40rpx );
 	line-height: 1.6em;
 }
 
