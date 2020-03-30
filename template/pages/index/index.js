@@ -11,8 +11,10 @@ Page({
         list: [],
         load: true,
         commodityAmount:0,    //菜品数量
-        commodityJsonList:{},
-        modalName:'bottomModal'
+        commodityJsonList:{},   //模拟数据json
+        interfaceList:[],   //界面上点击加号存储商品
+        shoptotal:0,    //商品总数
+        shoppricesum:0, //商品价格总和
     },
     onLoad() {
         wx.showLoading({
@@ -26,9 +28,11 @@ Page({
             list[i].id = i;
         }
         let goods = shopData.shopData.goods
-        goods.forEach(item=>{
-            item.foods.forEach(childItem=>{
+        goods.forEach((item,index)=>{
+            item.foods.forEach((childItem,cindex)=>{
                 childItem['quantity'] = 0
+                childItem['pindex'] = index
+                childItem['cindex'] = cindex
             })
         })
         this.setData({
@@ -47,14 +51,14 @@ Page({
             VerticalNavTop: (e.currentTarget.dataset.id - 1) * 50
         })
     },
-    commodityCut(e){     //数量减一
+    commodityCut(e){     //界面数量减一
         let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
         let cIndex = e.currentTarget.dataset.cidx;   //详细菜品,获取下标
         let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
         if(quantity<1){
             return
         }
-        let amount = quantity-1; //数量加一
+        let amount = quantity-1; //数量减一
         let oldcommodityJsonList,newcommodityJsonList;
         oldcommodityJsonList = this.data.commodityJsonList;
         oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
@@ -62,8 +66,9 @@ Page({
         this.setData({
             commodityJsonList:newcommodityJsonList
         })
+        this.shopcartFn()
     },
-    commodityAdd(e){    //数量加一
+    commodityAdd(e){    //界面数量加一
         let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
         let cIndex = e.currentTarget.dataset.cidx;   //详细菜品,获取下标
         let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
@@ -75,9 +80,110 @@ Page({
         this.setData({
             commodityJsonList:newcommodityJsonList
         })
+        this.shopcartFn()
+    },
+    shopcartAdd(e){  //购物车数量加一
+        let data =  e.currentTarget.dataset.item
+        let pIndex = data.pindex
+        let cIndex = data.cindex
+        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
+        let amount =quantity+1; //数量加一
+        console.log('amount: ', amount);
+        let oldcommodityJsonList,newcommodityJsonList;
+        oldcommodityJsonList = this.data.commodityJsonList;
+        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
+        newcommodityJsonList = oldcommodityJsonList;
+        this.setData({
+            commodityJsonList:newcommodityJsonList
+        })
+        this.shopcartFn()
+    },
+    shopcartcut(e){  //购物车数量减一
+        let data =  e.currentTarget.dataset.item
+        let pIndex = data.pindex
+        let cIndex = data.cindex
+        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
+        if(quantity<1){
+            return
+        }
+        let amount =quantity-1; //数量加一
+        let oldcommodityJsonList,newcommodityJsonList;
+        oldcommodityJsonList = this.data.commodityJsonList;
+        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
+        newcommodityJsonList = oldcommodityJsonList;
+        this.setData({
+            commodityJsonList:newcommodityJsonList
+        })
+        this.shopcartFn()
+    },
+    shopcartFn(){
+        //
+        let selectshopList = [];
+        this.data.commodityJsonList.goods.forEach(item=>{   //遍历取出已经在界面上加过的商品
+            item.foods.forEach(childItem=>{
+                if(childItem.quantity>0){
+                    selectshopList.push(childItem)
+                }
+            })
+        })
+        //计算商品总数
+        let shoptotalList=[];
+        let shoppriceList = [];
+        let shopSum,shoppricesum=0;
+        selectshopList.forEach(item=>{
+            shoptotalList.push(item.quantity);   //取出商品数量
+            shoppriceList.push(item.price*item.quantity);    //商品价格总和
+        })
+        console.log(selectshopList)
+        if(selectshopList.length == 0){
+            this.setData({
+                interfaceList:[],
+                shoptotal:0,
+                shoppricesum:0
+            })
+            return
+        }
+        shopSum = shoptotalList.reduce((n,m)=>{
+            return n + m;
+        })
+        shoppricesum = shoppriceList.reduce((n,m)=>{
+            return n + m;
+        })
+        this.setData({
+            interfaceList:selectshopList,
+            shoptotal:shopSum,
+            shoppricesum:shoppricesum
+        })
+    },
+    emptyshoppingcart(){    //清空购物车
+        let goods = shopData.shopData.goods
+        goods.forEach((item,index)=>{
+            item.foods.forEach((childItem,cindex)=>{
+                childItem['quantity'] = 0
+                childItem['pindex'] = index
+                childItem['cindex'] = cindex
+            })
+        })
+        this.setData({
+            interfaceList:[],
+            shoptotal:0,
+            shoppricesum:0,
+            commodityJsonList:shopData.shopData
+        })
+    },
+    callphone(e){
+        var tel = e.currentTarget.dataset.tel;
+        wx.makePhoneCall({
+            phoneNumber: '13510412261',
+            success: function () {
+                console.log("拨号成功！")
+            },
+            fail: function () {
+                console.log("拨号失败！")
+            }
+        })
     },
     showModal(e) {
-        console.log(e.currentTarget.dataset.target)
         this.setData({
             modalName: e.currentTarget.dataset.target
         })

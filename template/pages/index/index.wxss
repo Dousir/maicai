@@ -151,8 +151,22 @@
   margin-left: 10rpx;
   font-size:20rpx;
 }
-.shopcart-main-list{display: flex;}
+.shopcart-main-list{
+  display: flex;
+  padding-top:10rpx;
+}
 .shopcart-main-list-img{
-  width: 120rpx;
+  width: 150rpx;
   height: 120rpx;
+}
+.shopcart-main-list-content-black{
+  text-align: left;
+  margin-top: 10rpx;
+}
+.shopcart-main-list-content{
+  width: 100%;
+  padding-left: 15rpx;
+}
+.shopcart-main-list-content-price{
+  margin-top: 38rpx;
 }
