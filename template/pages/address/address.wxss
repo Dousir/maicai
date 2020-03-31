@@ -1,0 +1,9 @@
+/* pages/address.wxss */
+.cu-form-group .title{
+  width: 150rpx;
+}
+.saveaddress-btn{
+  width: 94%;
+  margin: 0 3%;
+  margin-top: 20rpx;
+}

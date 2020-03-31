@@ -6,8 +6,18 @@
   <view class="padding">
     <view class="bg-white receipt-main-box">
       <view class="receipt-main-text solid-bottom">
-        <view class="receipt-main-text-tips">
+        <view class="receipt-main-text-tips" wx:if="{{receipt==0}}" bindtap='showModal' data-target="RadioModal">
           请选择收货地址<text class="cuIcon-right"></text>
+        </view>
+        <view class="receipt-main-text-mian"  bindtap='showModal' data-target="RadioModal" wx:if="{{receipt!=0}}" >
+          <view >
+            <view class="receipt-main-text-mian-top">沿江路101好</view>
+            <view class="receipt-main-text-mian-bottom">
+              <text class="receipt-name">周先生</text>
+              <text class="receipt-pohone">18565652915</text>
+            </view>
+          </view>
+          <text class="cuIcon-right receipt-main-text-mian-cion"></text>
         </view>
       </view>
       <view class="receipt-time-box">
@@ -23,24 +33,64 @@
     <view class="commodity-list-title solid-bottom">豆森科技</view>
     <view class='commodity-list-box '>
       <view class="solid-bottom commodity-list-box-b">
-        <view class="commodity-list-item " wx:for="{{3}}">
+        <view class="commodity-list-item " wx:for="{{interfaceList}}" wx:key='key' wx:for-item='item'>
           <view class="commodity-item-left">
-            <view class="commodity-item-left-img" style="background-image:url(http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750);"></view>
+            <view class="commodity-item-left-img" style="background-image:url({{item.image}});"></view>
             <view class="commodity-item-left-text">
-              <view class="commodity-item-left-text-name">丝瓜</view>
-              <view class="commodity-item-left-text-fenliang">咸菜</view>
-              <view class="commodity-item-left-text-quantity">上海青</view>
+              <view class="commodity-item-left-text-name">{{item.name}}</view>
+              <view class="commodity-item-left-text-fenliang">　　</view>
+              <view class="commodity-item-left-text-quantity">X {{item.quantity}}</view>
             </view>
           </view>
           <view class="commodity-item-right">
-            <text class="text-price commodity-item-price">80.00</text>
+            <text class="text-price commodity-item-price">{{item.price}}</text>
           </view>
         </view>
       </view>
       <view class="delivery-box">
-        <view >配送费 <text class="delivery-tips">(商品总数4件)</text></view>
+        <view >配送费 <text class="delivery-tips">(商品总数{{interfaceList.length}}件)</text></view>
         <view class='text-price'>2</view>
       </view>
+      <view class="subtotal-box">
+        <view class='subtotal-main'>小计：<text class="text-price subtotal-main-price">{{shopSum}}</text></view>
+      </view>
     </view>
+  </view>
+  <view class="note-box bg-white">
+    <view class="note-main-title">备注</view>
+    <textarea class="note-input"></textarea>
+  </view>
+</view>
+<view class="pay-box">
+  <view class="pay-price">
+    <text class="text-price pay-price-text">10</text>
+  </view>
+  <view class="pay-btn">
+    <button class="pay-btn-min bg-green">支付</button>
+  </view>
+</view>
+
+
+
+<view class="cu-modal {{modalName=='RadioModal'?'show':''}}" bindtap="hideModal">
+  <view class="cu-dialog" catchtap>
+      <view class="cu-list menu text-left address-box"  scroll-y scroll-with-animation>
+        <view class="cu-item address-item-list" wx:for="{{5}}" wx:key>
+          <view class='address'>
+            <view class="address-top">沿江路101号11暗色调就</view>
+            <view class="address-bottom">
+              <text>周先生</text>
+              <text>18565652915</text>
+            </view>
+          </view>
+          <view class='modify-icon'>
+            <text class="modify-icon-text cuIcon-write"></text>
+          </view>
+        </view>
+      </view>
+      <view class="addAddress" bindtap='addAddressFn'>
+        <text class="cuIcon-roundadd addAddress-icon line-green"></text>
+        新增收货地址
+      </view>
   </view>
 </view>
