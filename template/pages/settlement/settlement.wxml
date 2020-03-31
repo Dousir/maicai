@@ -1,0 +1,46 @@
+<!--pages/settlement.wxml-->
+<cu-custom bgColor="bg-gradual-green" isCustom="{{true}}">
+  <view slot="content">提交订单</view>
+</cu-custom>
+<view class="receipt-box">
+  <view class="padding">
+    <view class="bg-white receipt-main-box">
+      <view class="receipt-main-text solid-bottom">
+        <view class="receipt-main-text-tips">
+          请选择收货地址<text class="cuIcon-right"></text>
+        </view>
+      </view>
+      <view class="receipt-time-box">
+        <view class="receipt-time-main"> 
+          <text class="text-bold line-black">立即送出</text>
+          <text class="line-green">大约10:42送达</text>
+        </view>
+        <view  class="receipt-time-tips"> 为减少接触，封闭管理时，请在地址中更新具体取商品地点</view>
+      </view>
+    </view>
+  </view>
+  <view class="commodity-box bg-white">
+    <view class="commodity-list-title solid-bottom">豆森科技</view>
+    <view class='commodity-list-box '>
+      <view class="solid-bottom commodity-list-box-b">
+        <view class="commodity-list-item " wx:for="{{3}}">
+          <view class="commodity-item-left">
+            <view class="commodity-item-left-img" style="background-image:url(http://fuss10.elemecdn.com/c/cd/c12745ed8a5171e13b427dbc39401jpeg.jpeg?imageView2/1/w/750/h/750);"></view>
+            <view class="commodity-item-left-text">
+              <view class="commodity-item-left-text-name">丝瓜</view>
+              <view class="commodity-item-left-text-fenliang">咸菜</view>
+              <view class="commodity-item-left-text-quantity">上海青</view>
+            </view>
+          </view>
+          <view class="commodity-item-right">
+            <text class="text-price commodity-item-price">80.00</text>
+          </view>
+        </view>
+      </view>
+      <view class="delivery-box">
+        <view >配送费 <text class="delivery-tips">(商品总数4件)</text></view>
+        <view class='text-price'>2</view>
+      </view>
+    </view>
+  </view>
+</view>

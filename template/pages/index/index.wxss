@@ -120,6 +120,12 @@
   right: 0;
   top: -1rpx;
 }
+.qisongjia{
+  position: absolute;
+  right: 20rpx;
+  color: #B5B2B0;
+  top: 30rpx;
+}
 .cu-modal{
   z-index: -1;
 }

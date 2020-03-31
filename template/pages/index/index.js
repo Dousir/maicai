@@ -106,7 +106,7 @@ Page({
         if(quantity<1){
             return
         }
-        let amount =quantity-1; //数量加一
+        let amount =quantity-1; //数量减一
         let oldcommodityJsonList,newcommodityJsonList;
         oldcommodityJsonList = this.data.commodityJsonList;
         oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
@@ -116,7 +116,7 @@ Page({
         })
         this.shopcartFn()
     },
-    shopcartFn(){
+    shopcartFn(){   //重新对商品列表复制
         //
         let selectshopList = [];
         this.data.commodityJsonList.goods.forEach(item=>{   //遍历取出已经在界面上加过的商品
@@ -134,8 +134,8 @@ Page({
             shoptotalList.push(item.quantity);   //取出商品数量
             shoppriceList.push(item.price*item.quantity);    //商品价格总和
         })
-        console.log(selectshopList)
         if(selectshopList.length == 0){
+            this.hideModal()
             this.setData({
                 interfaceList:[],
                 shoptotal:0,
@@ -170,11 +170,12 @@ Page({
             shoppricesum:0,
             commodityJsonList:shopData.shopData
         })
+        this.hideModal()
     },
     callphone(e){
         var tel = e.currentTarget.dataset.tel;
         wx.makePhoneCall({
-            phoneNumber: '13510412261',
+            phoneNumber: '18565652915',
             success: function () {
                 console.log("拨号成功！")
             },
@@ -183,13 +184,33 @@ Page({
             }
         })
     },
-    showModal(e) {
+    tojiesuan(){    //去结算
+        let interfaceList = [];
+        // console.log(this.data.interfaceList)
+        this.data.interfaceList.forEach(item=>{
+            let interfaceDict = {};
+            interfaceDict['name'] = item.name
+            interfaceDict['price'] = item.price
+            interfaceDict['quantity'] = item.quantity
+            interfaceDict['cindex'] = item.cindex
+            interfaceDict['image'] = item.cindex
+            interfaceList.push(interfaceDict)
+        })
+        interfaceList= JSON.stringify(interfaceList)
+        wx.navigateTo({
+            url:'../settlement/settlement?data='+interfaceList,  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+            success:function(){},        //成功后的回调；
+            fail:function(){},          //失败后的回调；
+            complete:function(){},      //结束后的回调(成功，失败都会执行)
+        })
+    },
+    showModal(e) {  //显示购物车
         this.setData({
             modalName: e.currentTarget.dataset.target
         })
     },
     hideModal(e) {
-        this.setData({
+        this.setData({ //隐藏购物车
             modalName: null
         })
     },
