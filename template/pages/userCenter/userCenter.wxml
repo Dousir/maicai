@@ -28,7 +28,7 @@
   </view>
   <view class="cu-list menu card-menu margin-top-xl margin-bottom-xl shadow-lg radius">
     <view class="cu-item arrow">
-      <view class="content" bindtap="" >
+      <view class="content" bindtap="gotoaddressList" >
         <text class="cuIcon-location text-grey"></text>
         <text class="text-grey">收货地址</text>
       </view>

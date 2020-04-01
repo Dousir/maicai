@@ -1,5 +1,7 @@
 /* pages/settlement.wxss */
-.receipt-box{padding-bottom: 140rpx;}
+.receipt-box{
+  padding-bottom: 140rpx;
+}
 .receipt-main-box{
   padding: 20rpx 15rpx 20rpx 15rpx;
   border-radius: 20rpx;
@@ -142,13 +144,13 @@
   position: absolute;
   top: 0;
   right: 0;
-
 }
 .pay-btn-min{
   width: 180rpx;
   height: 90rpx;
   border-radius:0 90rpx 90rpx 0;
   border: none;
+  line-height: 90rpx;
 }
 .address-item-list{
   display: flex;

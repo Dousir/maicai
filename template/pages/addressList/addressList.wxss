@@ -1,0 +1,43 @@
+/* pages/addressList/addressList.wxss */
+.addressList-box{
+  padding-top: 20rpx;
+  padding-bottom: 140rpx;
+}
+.address-item{
+  display: flex;
+  justify-content: space-between;
+  background: #fff;
+  width: 90%;
+  margin: 0 5%;
+  padding: 20rpx;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+}
+.address-item-text{
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+.address-item-name{
+  font-size: 28rpx;
+  color: #666;
+}
+.address-icon{
+  padding-top: 20rpx;
+  width: 60rpx;
+  text-align: center;
+}
+.cuIcon-write-icon{
+  font-size: 40rpx;
+}
+.addAddress-btn{
+  position: fixed;
+  bottom: 40rpx;
+  width: 90%;
+  margin: 0 5%;
+  background: #4FB947;
+  height: 80rpx;
+  line-height: 80rpx;
+  font-size: 35rpx;
+  color: #fff;
+}

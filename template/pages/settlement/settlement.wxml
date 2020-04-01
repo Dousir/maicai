@@ -63,7 +63,7 @@
 </view>
 <view class="pay-box">
   <view class="pay-price">
-    <text class="text-price pay-price-text">10</text>
+    <text class="text-price pay-price-text">{{shopSum}}</text>
   </view>
   <view class="pay-btn">
     <button class="pay-btn-min bg-green">支付</button>

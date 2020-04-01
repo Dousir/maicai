@@ -1,0 +1,16 @@
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}">
+	<view slot="backText">返回</view>
+	<view slot="content">管理收货地址</view>
+</cu-custom>
+<view class="addressList-box">
+  <view class="address-item" bindtap='gotoaddressDetils' wx:for='{{10}}'>
+    <view>
+      <view class="address-item-text">江西省九江市修水县沿江路古尚州131号</view>
+      <view class="address-item-name">周先生 18565652915</view>
+    </view>
+    <view class="address-icon">
+      <text class="cuIcon-write cuIcon-write-icon"></text>
+    </view>
+  </view>
+</view>
+<button class="addAddress-btn" bindtap='gotoaddressDetils'>新增收货地址</button>
