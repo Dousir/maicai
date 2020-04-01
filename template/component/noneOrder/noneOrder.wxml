@@ -1,0 +1,7 @@
+<view class="noneOrder-box">
+  <image src="../../data/order.png" class="noneOrder-img"/>
+  <view class="noneOrder-text-box">
+    <view class="noneOrder-main-text1">暂无订单</view>
+    <view class="noneOrder-main-text2">可以去看看有哪些想买的</view>
+  </view>
+</view>

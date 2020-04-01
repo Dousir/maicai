@@ -1,20 +1,17 @@
-const app = getApp()
+const app = getApp();
 const shopData  = require('../../data/data.js')
 Page({
     data: {
-        StatusBar: app.globalData.StatusBar,
-        CustomBar: app.globalData.CustomBar,
-        Custom: app.globalData.Custom,
-        TabCur: 0,
-        MainCur: 0,
+        TabCur: 0,  //左侧一级导航栏定位
+        MainCur: 0, //右侧二级title定位
         VerticalNavTop: 0,
-        list: [],
         load: true,
         commodityAmount:0,    //菜品数量
         commodityJsonList:{},   //模拟数据json
         interfaceList:[],   //界面上点击加号存储商品
         shoptotal:0,    //商品总数
         shoppricesum:0, //商品价格总和
+        openid:''
     },
     onLoad() {
         wx.showLoading({
@@ -37,12 +34,27 @@ Page({
         })
         this.setData({
             list: list,
-            listCur: list[0],
             commodityJsonList:shopData.shopData
         })
+        // let that = this
+        // wx.getUserInfo({
+        //     success: function (res) {
+     
+        //         console.log(res);
+        //         that.data.userInfo = res.userInfo;
+     
+        //         that.setData({
+        //             userInfo: that.data.userInfo
+        //         })
+        //     }
+        // })
     },
     onReady() {
         wx.hideLoading()
+    },
+    getPerson:function(e){
+        console.log(this.data.openid);
+        console.log(e);
     },
     tabSelect(e) {
         this.setData({
@@ -201,8 +213,6 @@ Page({
             interfaceList.push(interfaceDict)
         })
         interfaceList= JSON.stringify(interfaceList)
-        // return
-        let that = this;
         wx.navigateTo({
             url:'../settlement/settlement?data='+interfaceList,  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
             success:function(){
@@ -211,9 +221,7 @@ Page({
 
             },          //失败后的回调；
             complete:function(){
-                console.log('asdasdasd')
-                that.hideLoading()
-
+                wx.hideLoading()
             },      //结束后的回调(成功，失败都会执行)
         })
     },
@@ -225,6 +233,19 @@ Page({
     hideModal(e) {
         this.setData({ //隐藏购物车
             modalName: null
+        })
+    },
+    toUserCenter(){ //跳转到用户中心
+        wx.navigateTo({
+            url:'../userCenter/userCenter',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+            success:function(){
+            },        //成功后的回调；
+            fail:function(){
+
+            },          //失败后的回调；
+            complete:function(){
+                wx.hideLoading()
+            },      //结束后的回调(成功，失败都会执行)
         })
     },
     VerticalMain(e) {

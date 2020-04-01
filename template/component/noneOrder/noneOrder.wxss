@@ -1,0 +1,25 @@
+/* pages/noneOrder/noneOrder.wxss */
+.noneOrder-box{
+  width: 100%;
+  height: 600rpx;
+  background: #fff;
+  text-align: center;
+}
+.noneOrder-img{
+  width: 240rpx;
+  height: 320rpx;
+  margin-top: 40rpx;
+}
+.noneOrder-text-box{
+  margin-top: 50rpx;
+}
+.noneOrder-main-text1{
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+}
+.noneOrder-main-text2{
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}

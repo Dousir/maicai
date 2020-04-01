@@ -55,9 +55,9 @@
 </view>
 <!-- 购物车 -->
 <view class="shopcart-box clearfix">
-  <view class="contact-merchant f_l" bindtap="callphone" data-tel="{{13510412261}}">
-    <text class="cuIcon-phone contact-merchant-icon"></text>
-    <text class="contact-merchant-text">联系商家</text>
+  <view class="contact-merchant f_l" bindtap='toUserCenter'>
+    <text class="cuIcon-emoji contact-merchant-icon"></text>
+    <text class="contact-merchant-text">我的</text>
   </view>
   <view class='total-price f_l' bindtap="showModal" data-target="bottomModal">
     <view class="shopcart-icon f-l">

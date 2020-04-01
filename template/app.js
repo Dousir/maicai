@@ -1,5 +1,16 @@
 //app.js
 App({
+  callBusiness:function(e){
+    wx.makePhoneCall({
+        phoneNumber: '18565652915',
+        success: function () {
+            console.log("拨号成功！")
+        },
+        fail: function () {
+            console.log("拨号失败！")
+        }
+    })
+  },
   onLaunch: function() {
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
@@ -45,6 +56,7 @@ App({
         }
       }
     })
+    
   },
   globalData: {
     userInfo: null

@@ -1,0 +1,112 @@
+/* pages/orderDetails/orderDetails.wxss */
+
+.commodity-box {
+  margin: 30rpx 30rpx 0 30rpx;
+  border-radius: 20rpx;
+  padding: 0 15rpx 0 25rpx;
+}
+.commodity-list-title{
+  padding: 20rpx 0 20rpx 0;
+  color: #656667;
+}
+.commodity-list-box{
+  padding: 20rpx 0 5rpx 0;
+}
+.commodity-list-item{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30rpx;
+}
+.commodity-item-left{
+  display: flex;
+}
+.commodity-item-left-img{
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 10rpx;
+}
+.commodity-item-left-text{
+  margin-left: 15rpx;
+}
+.commodity-item-left-text-name{
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+.commodity-list-box-b{padding-bottom: 10rpx;}
+.commodity-item-left-text-fenliang{
+  font-size: 24rpx;
+  color: #999;
+}
+.commodity-item-left-text-quantity{
+  font-size: 24rpx;
+  color: #999;
+}
+.commodity-item-price{
+  font-size:28rpx;
+  color: #333;
+}
+.subtotal-main{
+  text-align: right;
+  color: #999;
+  font-size: 24rpx;
+  padding-bottom: 20rpx;
+  margin-top: 10rpx;
+}
+.subtotal-main-price{
+  font-weight: bold;
+  font-size: 28rpx;
+  color: #333;  
+}
+.delivery-box{
+  display: flex;
+  justify-content: space-between;
+  padding: 15rpx 0;
+}
+.delivery-tips{
+  font-size: 22rpx;
+  margin-left: 20rpx;
+  color: #999;
+}
+.callbusiness{
+  text-align: center;
+  padding: 20rpx 0;
+  background: #FCFCFC;
+  font-size: 24rpx;
+  font-weight: bold;
+}
+.order-info-box{
+  background: #fff;
+  margin: 10rpx 30rpx 0 30rpx;
+  padding: 0 15rpx 0 25rpx;
+  border-radius: 20rpx;
+}
+.order-info-title{
+  padding:20rpx 10rpx;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+}
+.order-info-item{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+.order-info-item-left{
+  width: 120rpx;
+  margin-right: 10rpx;
+  color: #666;
+}
+.order-info-item-right{
+  text-align: right;
+  color: #333;
+}
+.order-info-main{
+  padding: 20rpx 0 10rpx 0;
+}
+.tips{
+  text-align: center;
+  color:#C3C3C4 ;
+  font-size: 22rpx;
+  padding: 20rpx 0;
+}

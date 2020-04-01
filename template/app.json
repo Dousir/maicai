@@ -1,9 +1,11 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/myOrder/myOrder",
+    "pages/userCenter/userCenter",
     "pages/settlement/settlement",
-    "pages/address/address"
-    
+    "pages/address/address",
+    "pages/orderDetails/orderDetails"
   ],
   "window": {
     "backgroundTextStyle": "light",

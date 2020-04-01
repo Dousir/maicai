@@ -1,0 +1,38 @@
+<!--pages/userCenter/userCenter.wxml-->
+<cu-custom bgColor="bg-gradual-green" isBack="{{true}}">
+	<view slot="backText">返回</view>
+	<view slot="content">我的订单</view>
+</cu-custom>
+<scroll-view scroll-x class="bg-white nav text-center">
+  <view class="cu-item {{index==TabCur?'text-blue cur':''}}" wx:for="{{tabName}}" wx:key bindtap="tabSelect" data-id="{{index}}">
+    {{item}}
+  </view>
+</scroll-view>
+<noneOrder wx:if='{{orderList.length<1}}'></noneOrder>
+<view class="orderList-box">
+  <view class="orderList-item">
+    <view class="orderList-item-title solid-bottom">
+      <text class="orderList-item-title-name">豆森科技</text>
+      <text class="orderList-item-title-tips" wx:if='{{TabCur==2 && status==0}}'>已完成</text>
+      <text class="orderList-item-title-tips" wx:if='{{TabCur==0}}'>待付款,剩余13:55</text>
+      <text class="orderList-item-title-tips" wx:if='{{TabCur==2 && status==1}}'>已取消</text>
+      <text class="orderList-item-title-tips" wx:if='{{TabCur==1}}'>正在送货</text>
+    </view>
+    <view class="orderList-main">
+      <view class="orderList-item" bindtap='gotoDeatils'>
+        <view class="orderList-main-details">
+          <image src="../../data/order.png" class="orderList-main-details-img" />
+          <view class="orderList-main-details-text">
+            <view class="orderList-main-details-time">下单时间：2020-30-31 22:36</view>
+            <view class="orderList-main-details-price">总价：<text class="text-price">20</text></view>
+          </view>
+        </view>
+        <view class="orderList-main-operating">
+          <botton class="cu-btn round line-whilte orderList-main-operating-btn" role='button' aria-disabled='flse' wx:if='{{TabCur==0}}'>付款</botton>
+          <botton class="cu-btn round line-whilte orderList-main-operating-btn" bindtap='cuidanClickFn' role='button' aria-disabled='flse' wx:if='{{TabCur==1}}'>催单</botton>
+          <botton class="cu-btn round line-whilte orderList-main-operating-btn" role='button' aria-disabled='flse' wx:if='{{TabCur==2}}'>再来一单</botton>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

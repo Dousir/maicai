@@ -1,0 +1,47 @@
+/* pages/myOrder/myOrder.wxss */
+.orderList-box{
+  padding: 10rpx 20rpx;
+}
+.orderList-item{
+  background: #fff;
+  border-radius: 10rpx;
+  padding:10rpx 30rpx
+}
+.orderList-item-title{
+  display: flex;
+  justify-content: space-between;
+  padding: 10rpx 0 ;
+}
+.orderList-item-title-name{
+color: #333;
+font-weight: bold;
+}
+.orderList-item-title-tips{
+  color: #999;
+  font-size: 24rpx;
+}
+.orderList-main-details{
+  display: flex;
+  margin-top: 15rpx;
+  padding-bottom: 15rpx;
+}
+.orderList-main-details-img{
+  width: 120rpx;
+  height: 120rpx;
+}
+.orderList-main-details-text{
+  margin-left: 15rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+.orderList-main-details-time{
+  margin-bottom: 10rpx;
+}
+.orderList-main-operating{
+  padding-bottom: 10rpx;
+  display: flex;
+  justify-content: flex-end;
+}
+.orderList-main-operating-btn{
+  height: 50rpx;
+}
