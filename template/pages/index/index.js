@@ -11,7 +11,8 @@ Page({
         interfaceList:[],   //界面上点击加号存储商品
         shoptotal:0,    //商品总数
         shoppricesum:0, //商品价格总和
-        openid:''
+        openid:'',
+        searchInputValue:''
     },
     onLoad() {
         wx.showLoading({
@@ -36,18 +37,6 @@ Page({
             list: list,
             commodityJsonList:shopData.shopData
         })
-        // let that = this
-        // wx.getUserInfo({
-        //     success: function (res) {
-     
-        //         console.log(res);
-        //         that.data.userInfo = res.userInfo;
-     
-        //         that.setData({
-        //             userInfo: that.data.userInfo
-        //         })
-        //     }
-        // })
     },
     onReady() {
         wx.hideLoading()
@@ -62,6 +51,21 @@ Page({
             MainCur: e.currentTarget.dataset.id,
             VerticalNavTop: (e.currentTarget.dataset.id - 1) * 50
         })
+    },
+    searchClick(){  //搜索商品
+        let arry = [];
+        let searchInputValue = this.data.searchInputValue;
+        console.log('searchInputValue: ', searchInputValue);
+        let foodsList = this.data.commodityJsonList.goods;
+        foodsList.forEach(item=>{
+            item.foods.forEach(childItem=>{
+                if(childItem.name.match(searchInputValue) != null){
+                    
+                    arry.push(childItem)
+                }
+            })
+        })
+        console.log('arry: ', arry);
     },
     commodityCut(e){     //界面数量减一
         let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
@@ -278,5 +282,11 @@ Page({
                 return false
             }
         }
-    }
+    },
+    getInputValue(e){   //获取input的值
+        console.log(e.detail)// {value: "ff", cursor: 2}  
+        this.setData({
+            searchInputValue:e.detail.value
+        })
+      }
 })

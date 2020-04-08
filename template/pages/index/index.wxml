@@ -1,7 +1,7 @@
 <cu-custom bgColor="bg-gradual-green">
   <view slot="content">豆森科技</view>
 </cu-custom>
-<view class="bg-img bg-mask padding-tb-xl" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg');height: 300rpx;">
+<!-- <view class="bg-img bg-mask padding-tb-xl" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg');height: 300rpx;">
   <view class="padding-xl text-white">
     <view class="padding-xs text-xl">
       钢铁之翼
@@ -10,17 +10,26 @@
       Only the guilty need fear me.
     </view>
   </view>
-</view>
+</view> -->
+
 <view class="VerticalBox">
 <!-- 左侧一级导航 -->
-  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" style="height:calc(100vh - 375rpx)">
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" >
     <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{commodityJsonList.goods}}" wx:for-index='index' wx:key='key' wx:for-item="item" bindtap='tabSelect' data-id="{{index}}">
      {{item.name}}
     </view>
   </scroll-view>
 <!-- 右侧商品 -->
-  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 375rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
-    <view class="padding-top padding-lr" wx:key='childKey' wx:for="{{commodityJsonList.goods}}" wx:for-item="item" id="main-{{childIndex}}" wx:for-index='childIndex'>
+<view>
+  <view class="search-box">
+    <view class="search-input-box">
+      <text class="cuIcon-search search-icon"></text>
+      <input type="text" class="search-input" placeholder="输入您想要查找的商品" bindinput='getInputValue' />
+      <button class="cu-btn round bg-green search-btn" role="button" bindtap='searchClick' aria-disabled="true">搜索</button>
+    </view>
+  </view>
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px - 90rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+    <view class="padding-top10 padding-left vericalmainItem" wx:key='childKey' wx:for="{{commodityJsonList.goods}}" wx:for-item="item" id="main-{{childIndex}}" wx:for-index='childIndex'>
       <view class='cu-bar solid-bottom bg-white'>
         <view class='action'>
           <text class='cuIcon-title text-green'></text> {{item.name}} </view>
@@ -52,6 +61,7 @@
       </view>
     </view>
   </scroll-view>
+</view>
 </view>
 <!-- 购物车 -->
 <view class="shopcart-box clearfix">

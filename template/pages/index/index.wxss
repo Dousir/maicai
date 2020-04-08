@@ -4,11 +4,44 @@
     display: flex;
 
 }
+.search-box{
+  width: 100%;
+  background: #fff;
+  padding: 5px 0;
+}
+.padding-top10{
+  padding-top: 10rpx;
+}
+.search-input-box{
+  width: 95%;
+  height: 70rpx;
+  border: 1rpx solid #8DC63F;
+  margin: 0 auto;
+  border-radius: 60rpx;
+  display: flex;
+}
+.search-icon{
+  font-size: 40rpx;
+  display: inline-block;
+  margin: 10rpx 0 0 10rpx;
+}
+.search-input{
+  border: none;
+  width: 90%;
+  height: 70rpx;
+  padding-left: 20rpx;
+}
+.search-btn{
+  width: 160rpx;
+  height: 68rpx;
+  font-size: 30rpx;
+  border: none;
+}
 /* pages/component/nav/nav.wxss */
 .VerticalNav.nav {
   width: 200rpx;
   white-space: initial;
-  padding-bottom: 140rpx
+  /* padding-bottom: 140rpx */
 }
 
 .VerticalNav.nav .cu-item {
@@ -41,6 +74,11 @@
 }
 .VerticalMain{
   background-color: #f1f1f1;
+}
+.vericalmainItem{
+  background: #f1f1f1;
+}
+.vericalmainItem:last-child{
   padding-bottom: 140rpx;
 }
 .commodity-price{
