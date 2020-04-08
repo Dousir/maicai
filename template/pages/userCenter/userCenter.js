@@ -6,14 +6,28 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    userName:'' , //用户名称
+    userImg:'', //用户头像
+    location:{},  //用户位置
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    // this.getUserAddress()
+    try {
+      const value = wx.getStorageSync('userInfo')
+      if (value) {
+        this.setData({
+          userName:value.nickName,
+          userImg:value.avatarUrl
+        })
+        // Do something with return value
+      }
+    } catch (e) {
+      // Do something when catch error
+    }
   },
 
   /**
@@ -29,7 +43,7 @@ Page({
   onShow: function () {
 
   },
-
+  
   gotoOrderList(e){
     let classIndex = e.currentTarget.dataset.index
     wx.navigateTo({

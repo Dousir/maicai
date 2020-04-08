@@ -1,5 +1,7 @@
 const app = getApp();
 const shopData  = require('../../data/data.js')
+var QQMapWX = require('../../utils/qqmap-wx-jssdk.js');
+var qqmapsdk;
 Page({
     data: {
         TabCur: 0,  //左侧一级导航栏定位
@@ -11,9 +13,11 @@ Page({
         interfaceList:[],   //界面上点击加号存储商品
         shoptotal:0,    //商品总数
         shoppricesum:0, //商品价格总和
-        openid:''
+        openid:'',
+        address:''
     },
     onLoad() {
+        this.getUserInfo()
         wx.showLoading({
             title: '加载中...',
             mask: true
@@ -36,18 +40,7 @@ Page({
             list: list,
             commodityJsonList:shopData.shopData
         })
-        // let that = this
-        // wx.getUserInfo({
-        //     success: function (res) {
-     
-        //         console.log(res);
-        //         that.data.userInfo = res.userInfo;
-     
-        //         that.setData({
-        //             userInfo: that.data.userInfo
-        //         })
-        //     }
-        // })
+        this.getUserLocation()
     },
     onReady() {
         wx.hideLoading()
@@ -202,7 +195,6 @@ Page({
             mask: true
         });
         let interfaceList = [];
-        // console.log(this.data.interfaceList)
         this.data.interfaceList.forEach(item=>{
             let interfaceDict = {};
             interfaceDict['name'] = item.name
@@ -278,5 +270,136 @@ Page({
                 return false
             }
         }
-    }
+    },
+
+    getUserLocation: function () {
+            let _this = this;
+            wx.getSetting({
+              success: (res) => {
+                console.log(JSON.stringify(res))
+                // res.authSetting['scope.userLocation'] == undefined    表示 初始化进入该页面
+                // res.authSetting['scope.userLocation'] == false    表示 非初始化进入该页面,且未授权
+                // res.authSetting['scope.userLocation'] == true    表示 地理位置授权
+                if (res.authSetting['scope.userLocation'] != undefined && res.authSetting['scope.userLocation'] != true) {
+                  wx.showModal({
+                    title: '请求授权当前位置',
+                    content: '需要获取您的地理位置，请确认授权',
+                    success: function (res) {
+                      if (res.cancel) {
+                        wx.showToast({
+                          title: '拒绝授权',
+                          icon: 'none',
+                          duration: 1000
+                        })
+                      } else if (res.confirm) {
+                        wx.openSetting({
+                          success: function (dataAu) {
+                            if (dataAu.authSetting["scope.userLocation"] == true) {
+                              wx.showToast({
+                                title: '授权成功',
+                                icon: 'success',
+                                duration: 1000
+                              })
+                              //再次授权，调用wx.getLocation的API
+                              _this.getLocation();
+                            } else {
+                              wx.showToast({
+                                title: '授权失败',
+                                icon: 'none',
+                                duration: 1000
+                              })
+                            }
+                          }
+                        })
+                      }
+                    }
+                  })
+                } else if (res.authSetting['scope.userLocation'] == undefined) {
+                  //调用wx.getLocation的API
+                  _this.getLocation();
+                }
+                else {
+                  //调用wx.getLocation的API
+                  _this.getLocation();
+                }
+              }
+            })
+          },
+          // 微信获得经纬度
+          getLocation: function () {
+            let _this = this;
+            wx.getLocation({
+              type: 'wgs84',
+              success: function (res) {
+                console.log(JSON.stringify(res))
+                var latitude = res.latitude
+                var longitude = res.longitude
+                var speed = res.speed
+                var accuracy = res.accuracy;
+                _this.getLocal(latitude, longitude)
+              },
+              fail: function (res) {
+                console.log('fail' + JSON.stringify(res))
+              }
+            })
+          },
+          // 获取当前地理位置
+          getLocal: function (latitude, longitude) {
+            let _this = this;
+            let qqmapsdk = new QQMapWX({
+                key: '6FGBZ-OJFWS-FYHOV-62BRJ-R73K3-I2FN3' 
+              });
+            qqmapsdk.reverseGeocoder({
+              location: {
+                latitude: latitude,
+                longitude: longitude
+              },
+              success: function (res) {
+                let province = res.result.ad_info.province
+                let city = res.result.ad_info.city
+                _this.setData({
+                  province: province,
+                  city: city,
+                  latitude: latitude,
+                  longitude: longitude,
+                    address:res.result.address
+                })
+         
+              },
+              fail: function (res) {
+                console.log('res2: ', res);
+              },
+              complete: function (res) {
+                // console.log(res);
+              }
+            });
+          },
+    getUserInfo(){
+        // 查看是否授权
+        wx.getSetting({
+            success (res){
+            if (res.authSetting['scope.userInfo']) {
+                // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+                wx.getUserInfo({
+                success: function(res) {
+                    try {
+                        wx.setStorage({
+                            key:"userInfo",
+                            data:res.userInfo
+                          })
+                        // wx.setStorageSync('userInfo', res.userInfo);
+                      } catch (e) { 
+                        //弹框提示
+                        wx.showToast({
+                          title: '用户数据获取失败，请检查相关配置，是否联网等',
+                          icon: 'none',
+                          duration: 2000
+                        });
+                      }
+                }
+                })
+            }
+            }
+        })
+    },
 })
