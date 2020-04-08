@@ -14,7 +14,8 @@ Page({
         shoptotal:0,    //商品总数
         shoppricesum:0, //商品价格总和
         openid:'',
-        address:''
+        address:'',
+        searchInputValue:''
     },
     onLoad() {
         this.getUserInfo()
@@ -55,6 +56,21 @@ Page({
             MainCur: e.currentTarget.dataset.id,
             VerticalNavTop: (e.currentTarget.dataset.id - 1) * 50
         })
+    },
+    searchClick(){  //搜索商品
+        let arry = [];
+        let searchInputValue = this.data.searchInputValue;
+        console.log('searchInputValue: ', searchInputValue);
+        let foodsList = this.data.commodityJsonList.goods;
+        foodsList.forEach(item=>{
+            item.foods.forEach(childItem=>{
+                if(childItem.name.match(searchInputValue) != null){
+                    
+                    arry.push(childItem)
+                }
+            })
+        })
+        console.log('arry: ', arry);
     },
     commodityCut(e){     //界面数量减一
         let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
