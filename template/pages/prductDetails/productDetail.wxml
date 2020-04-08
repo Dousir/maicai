@@ -1,3 +1,31 @@
 <cu-custom bgColor="bg-gradual-green" isCustom="{{true}}">
-  <view slot="content">产品详情</view>
+  <view slot="content">{{product.name}}</view>
 </cu-custom>
+<view class="product-img-box">
+  <swiper class="screen-swiper {{DotStyle?'square-dot':'round-dot'}}" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
+    <swiper-item wx:for="{{swiperList}}" wx:key="key">
+      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
+      <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
+    </swiper-item>
+  </swiper>
+</view>
+<view class="product-info-box">
+  <view class="product-info-name">{{product.name}}</view>
+  <view class="product-info-sales">
+    月销：{{product.sellCount}}
+  </view>
+  <view class="product-info-price">
+    <text class="text-price text-red product-info-price-text">{{product.price}}</text>
+  </view>
+</view>
+<view class="product-explanation">
+  <view class="explanation-title solid-bottom">商品信息</view>
+  <view class="explanation-text">
+    <view class="explanation-text-title">价格说明</view>
+    <view>1、未划线价：未划线价是当前商品或服务在本平台上的实时售价(不含包装费、运输费等)，是您最终决定是否购买商品或服务的依据。具体成交价格根据商品或服务参加的活动等情况发生变化，最终以订单结算页面呈现的价格为准。</view>
+    <view>2、划线价：划线价为参考价，并非原价或线下实体门店的销售价。该划线价可能是商品或服务的网络零售指导价。由于地区、时间的差异性和市场行情波动，零售指导价、销售价等可能会与您购物时展示的价格不一致，划线价仅供您参考。</view>
+    <view>
+      * 此说明仅当出现价格比较时有效。
+    </view>
+  </view>
+</view>

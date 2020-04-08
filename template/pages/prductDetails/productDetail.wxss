@@ -1,1 +1,37 @@
-/* pages/prductDetails/productDetail.wxss */
+.product-info-name{
+  font-size: 36rpx;
+  color: #333;
+  font-weight: bold;
+}
+.product-info-price{
+  margin-top: 20rpx;
+}
+.product-info-sales{
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 5rpx;
+}
+.product-info-price-text{
+  font-size: 50rpx;
+}
+.product-info-box{
+  background: #fff;
+  padding: 20rpx;
+}
+.product-explanation{
+  background: #fff;
+  padding: 20rpx;
+  margin-top: 20rpx;
+}
+.explanation-title{
+  font-weight: bold;
+  font-size: 30rpx;
+  padding-bottom: 20rpx;
+}
+.explanation-text{
+  margin-top:20rpx;
+  font-size: 28rpx;
+  color: #999;
+  line-height: 50rpx;
+  text-align: justify;
+}

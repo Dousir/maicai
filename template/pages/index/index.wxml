@@ -35,7 +35,7 @@
           <text class='cuIcon-title text-green'></text> {{item.name}} </view>
       </view>
       <view class="cu-list menu-avatar">
-        <view class="cu-item padding-bottom-xs" wx:for="{{item.foods}}" wx:key='itemKey'  wx:for-item='childItem' >
+        <view class="cu-item padding-bottom-xs" bindtap='toProductDetail' data-foodsData="{{childItem}}" wx:for="{{item.foods}}" wx:key='itemKey'  wx:for-item='childItem' >
           <view class="cu-avatar lg" style="background-image:url({{childItem.image}});"></view>
           <view class="content">
             <view class="text-black">{{childItem.name}}</view>

@@ -6,7 +6,7 @@
   	<form >
       <view class="cu-form-group">
         <view class="title">收货地址</view>
-        <input placeholder="请输入您的(小区/社区)名称和地址"></input>
+        <input placeholder="请输入您的(小区/社区)名称和地址" value="{{address}}"></input>
       </view>
       <view class="cu-form-group">
         <view class="title">门牌号</view>
