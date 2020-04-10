@@ -1,4 +1,6 @@
 // pages/myOrder/myOrder.js
+const https = require('../../utils/ajax.js')
+
 Page({
 
   /**

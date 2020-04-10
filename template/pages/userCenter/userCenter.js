@@ -1,4 +1,6 @@
 // pages/userCenter/userCenter.js
+const https = require('../../utils/ajax.js')
+
 const app = getApp();
 Page({
 

@@ -1,3 +1,5 @@
+const https = require('../../utils/ajax.js')
+
 Page({
   data: {
     cardCur: 0,

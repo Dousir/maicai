@@ -1,6 +1,6 @@
 const app = getApp();
 const shopData  = require('../../data/data.js')
-
+const https = require('../../utils/ajax.js')
 Page({
     data: {
         TabCur: 0,  //左侧一级导航栏定位
@@ -57,6 +57,18 @@ Page({
                     arry.push(childItem)
                 }
             })
+        })
+    },
+    getProductList(){   //获取商品列表
+        https.GET({
+            params: params,
+            API_URL: "api/order/search",
+            success: (res) => {
+                console.log('res: ', res);
+            },
+            fail: function () {
+              console.log()
+            }
         })
     },
     commodityCut(e){     //界面数量减一

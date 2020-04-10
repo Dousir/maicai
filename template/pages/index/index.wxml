@@ -75,7 +75,7 @@
     </view>
     <view class="f_l shopcart-text-box">
       <text class="total-price-text text-price text-red">{{shoppricesum}}</text>
-      <text class="deliveryFee-text">另需配送费<text class="text-price text-red">2</text></text>
+      <text class="deliveryFee-text">另需配送费<text class="text-price text-red">0</text></text>
     </view>
   </view>
   <view  class="cu-btn f_l  shopcart-pay-btn bg-green button-hover" wx:if="{{interfaceList.length>0}}" bindtap='tojiesuan'>去结算</view>

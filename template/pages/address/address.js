@@ -1,6 +1,8 @@
 // pages/address.js
 var QQMapWX = require('../../utils/qqmap-wx-jssdk.js');
 var qqmapsdk;
+const https = require('../../utils/ajax.js')
+
 Page({
 
   /**
