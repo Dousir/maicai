@@ -14,21 +14,22 @@
 
 <view class="VerticalBox">
 <!-- 左侧一级导航 -->
-  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}" >
+  <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}"  style="height:calc(100vh - 60px)">
     <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{commodityJsonList.goods}}" wx:for-index='index' wx:key='key' wx:for-item="item" bindtap='tabSelect' data-id="{{index}}">
      {{item.name}}
     </view>
   </scroll-view>
 <!-- 右侧商品 -->
-<view>
-  <view class="search-box">
+<view style="width:100%">
+  <!-- <view class="search-box">
     <view class="search-input-box">
       <text class="cuIcon-search search-icon"></text>
       <input type="text" class="search-input" placeholder="输入您想要查找的商品" bindinput='getInputValue' />
       <button class="cu-btn round bg-green search-btn" role="button" bindtap='searchClick' aria-disabled="true">搜索</button>
     </view>
-  </view>
-  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px - 90rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+  </view> -->
+  <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
+  <!-- <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px - 90rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain"> -->
     <view class="padding-top10 padding-left vericalmainItem" wx:key='childKey' wx:for="{{commodityJsonList.goods}}" wx:for-item="item" id="main-{{childIndex}}" wx:for-index='childIndex'>
       <view class='cu-bar solid-bottom bg-white'>
         <view class='action'>
