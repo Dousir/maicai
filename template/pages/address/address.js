@@ -9,16 +9,29 @@ Page({
    * 页面的初始数据
    */
   data: {
-    address:'',
-
+    address:{},
+    title:'新增收货地址',
+    modifyData:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.getUserLocation()
-
+    console.log(options.modifyData)
+    if(options.modifyData != 'undefined'){
+      this.setData({
+        title:'修改收货地址',
+        address:JSON.parse(options.modifyData),
+        modifyData:true
+      })
+    }else{
+      this.getUserLocation()
+      this.setData({
+        title:'新增收货地址',
+        modifyData:false
+      })
+    }
   },
 
   /**
@@ -34,7 +47,40 @@ Page({
   onShow: function () {
 
   },
-
+  loginForm(e){
+    let value = wx.getStorageSync('userid')
+    let submitData = e.detail.value
+    
+    // console.log('this.data.modifyData: ', this.data.modifyData);
+    let url = ''
+    if(!this.data.modifyData){
+      url = "api.php/paotui/user/add_user_address"
+    }else{
+      url = '/api.php/paotui/user/modify_user_address'
+      submitData['user_id'] = value.user_id
+      submitData['id'] = this.data.address.id
+    }
+    https.POST({
+      params: submitData,
+      API_URL: url,
+      success: (res) => {
+        if(res.data.msg != 'success'){
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 2000
+          })
+        }else{
+          wx.showToast({
+            title: res.data.msg,
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      },
+      fail: function (res) {}
+    })
+  },
   getUserLocation: function () {
         let _this = this;
         wx.getSetting({
@@ -115,16 +161,12 @@ Page({
             longitude: longitude
           },
           success: function (res) {
-            let province = res.result.ad_info.province
-            let city = res.result.ad_info.city
+            let user_address = {
+              user_address:res.result.address
+            }
             _this.setData({
-              province: province,
-              city: city,
-              latitude: latitude,
-              longitude: longitude,
-                address:res.result.address
+                address:user_address
             })
-     
           },
           fail: function (res) {
             console.log('res2: ', res);

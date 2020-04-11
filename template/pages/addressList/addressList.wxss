@@ -7,8 +7,8 @@
   display: flex;
   justify-content: space-between;
   background: #fff;
-  width: 90%;
-  margin: 0 5%;
+  width: 96%;
+  margin: 0 2%;
   padding: 20rpx;
   border-radius: 20rpx;
   margin-bottom: 20rpx;
@@ -23,12 +23,18 @@
   color: #666;
 }
 .address-icon{
+
   padding-top: 20rpx;
   width: 60rpx;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+
 }
 .cuIcon-write-icon{
   font-size: 40rpx;
+  display: inline-block;
+
 }
 .addAddress-btn{
   position: fixed;

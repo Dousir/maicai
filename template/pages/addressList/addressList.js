@@ -7,14 +7,14 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    addressList:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getAddressList()
   },
 
   /**
@@ -23,7 +23,20 @@ Page({
   onReady: function () {
 
   },
-
+  getAddressList(){
+    https.GET({
+      API_URL: "api.php/paotui/user/get_user_address_list",
+      success: (res) => {
+          console.log('res: ', res);
+          this.setData({
+            addressList:res.data.data
+          })
+      },
+      fail: function () {
+        console.log()
+      }
+    })
+  },
   /**
    * 生命周期函数--监听页面显示
    */
@@ -44,9 +57,9 @@ Page({
   onUnload: function () {
 
   },
-  gotoaddressDetils(){
+  gotoaddressDetils(e){
     wx.navigateTo({
-      url:'../address/address',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+      url:'../address/address?modifyData='+JSON.stringify(e.currentTarget.dataset.item),  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
       success:function(){
       },        //成功后的回调；
       fail:function(){
