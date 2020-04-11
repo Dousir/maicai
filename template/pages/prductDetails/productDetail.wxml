@@ -12,7 +12,7 @@
 <view class="product-info-box">
   <view class="product-info-name">{{product.name}}</view>
   <view class="product-info-sales">
-    月销：{{product.sellCount}}
+    月销：{{product.sales}}
   </view>
   <view class="product-info-price">
     <text class="text-price text-red product-info-price-text">{{product.price}}</text>

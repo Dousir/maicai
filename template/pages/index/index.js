@@ -1,6 +1,6 @@
 const app = getApp();
-const shopData  = require('../../data/data.js')
-console.log('shopData: ', shopData);
+// const shopData  = require('../../data/data.js')
+// console.log('shopData: ', shopData);
 const https = require('../../utils/ajax.js')
 Page({
     data: {
@@ -8,13 +8,14 @@ Page({
         MainCur: 0, //右侧二级title定位
         VerticalNavTop: 0,
         load: true,
-        commodityAmount:0,    //菜品数量
         commodityJsonList:{},   //商品列表
         interfaceList:[],   //界面上点击加号存储商品
         shoptotal:0,    //商品总数
         shoppricesum:0, //商品价格总和
-        openid:'',
-        searchInputValue:''
+        openid:'',  //用户openid
+        // searchInputValue:'',
+        usercode:'', //每次用户登录 获取code发给后台获取openid
+        defaultcommodityJsonList:[],
     },
     onLoad() {
         wx.showLoading({
@@ -54,18 +55,21 @@ Page({
             success: (res) => {
                 let resData = res.data.data
                 let keysName = Object.keys(res.data.data)
-                let resDataList = []
+                let resDataList = [] 
                 keysName.forEach((item,index)=>{
+                    resData[item].forEach((childItem,childIndex)=>{
+                        childItem['pid'] = index
+                        childItem['quantity'] = 0
+                    })
                     let resDataDict = {}
                     resDataDict['name'] = item
                     resDataDict['id'] = index
                     resDataDict['goods'] = resData[item]
                     resDataList.push(resDataDict)
-                    
                 })
-                // console.log('resDataList: ', resDataList);
                 this.setData({
-                    commodityJsonList:resDataList
+                    commodityJsonList:resDataList,
+                    defaultcommodityJsonList:resDataList        //用作清空购物车
                 })
             },
             fail: function () {
@@ -76,28 +80,30 @@ Page({
     commodityCut(e){     //界面数量减一
         let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
         let cIndex = e.currentTarget.dataset.cidx;   //详细菜品,获取下标
-        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
+        let quantity = this.data.commodityJsonList[pIndex].goods[cIndex].quantity;
         if(quantity<1){
             return
         }
-        let amount = quantity-1; //数量减一
+        let amount =quantity-1; //数量加一
         let oldcommodityJsonList,newcommodityJsonList;
         oldcommodityJsonList = this.data.commodityJsonList;
-        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
+        oldcommodityJsonList[pIndex].goods[cIndex].quantity = amount;
         newcommodityJsonList = oldcommodityJsonList;
         this.setData({
             commodityJsonList:newcommodityJsonList
         })
         this.shopcartFn()
+        
     },
     commodityAdd(e){    //界面数量加一
         let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
         let cIndex = e.currentTarget.dataset.cidx;   //详细菜品,获取下标
-        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
+        let quantity = this.data.commodityJsonList[pIndex].goods[cIndex].quantity;
+        
         let amount =quantity+1; //数量加一
         let oldcommodityJsonList,newcommodityJsonList;
         oldcommodityJsonList = this.data.commodityJsonList;
-        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
+        oldcommodityJsonList[pIndex].goods[cIndex].quantity = amount;
         newcommodityJsonList = oldcommodityJsonList;
         this.setData({
             commodityJsonList:newcommodityJsonList
@@ -106,42 +112,49 @@ Page({
     },
     shopcartAdd(e){  //购物车数量加一
         let data =  e.currentTarget.dataset.item
-        let pIndex = data.pindex
-        let cIndex = data.cindex
-        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity
-        let amount =quantity+1 //数量加一
-        let oldcommodityJsonList,newcommodityJsonList
-        oldcommodityJsonList = this.data.commodityJsonList
-        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount
-        newcommodityJsonList = oldcommodityJsonList
+        let pIndex = data.pid
+        let cIndex = data.id
+        let commodityJsonList = this.data.commodityJsonList
+        commodityJsonList.forEach(item=>{
+            if(item.id == pIndex){
+                item.goods.forEach(childItem=>{
+                    if(childItem.id == cIndex){
+                        childItem.quantity++
+                    }
+                })
+            }
+        })
         this.setData({
-            commodityJsonList:newcommodityJsonList
+            commodityJsonList:commodityJsonList
         })
         this.shopcartFn()
     },
     shopcartcut(e){  //购物车数量减一
         let data =  e.currentTarget.dataset.item
-        let pIndex = data.pindex
-        let cIndex = data.cindex
-        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
-        if(quantity<1){
+        if(data.quantity<1){
             return
         }
-        let amount =quantity-1; //数量减一
-        let oldcommodityJsonList,newcommodityJsonList;
-        oldcommodityJsonList = this.data.commodityJsonList;
-        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
-        newcommodityJsonList = oldcommodityJsonList;
+        let pIndex = data.pid
+        let cIndex = data.id
+        let commodityJsonList = this.data.commodityJsonList
+        commodityJsonList.forEach(item=>{
+            if(item.id == pIndex){
+                item.goods.forEach(childItem=>{
+                    if(childItem.id == cIndex){
+                        childItem.quantity--
+                    }
+                })
+            }
+        })
         this.setData({
-            commodityJsonList:newcommodityJsonList
+            commodityJsonList:commodityJsonList
         })
         this.shopcartFn()
     },
     shopcartFn(){   //重新对商品列表复制
-        //
         let selectshopList = [];
-        this.data.commodityJsonList.goods.forEach(item=>{   //遍历取出已经在界面上加过的商品
-            item.foods.forEach(childItem=>{
+        this.data.commodityJsonList.forEach(item=>{   //遍历取出已经在界面上加过的商品
+            item.goods.forEach(childItem=>{
                 if(childItem.quantity>0){
                     selectshopList.push(childItem)
                 }
@@ -177,19 +190,16 @@ Page({
         })
     },
     emptyshoppingcart(){    //清空购物车
-        let goods = shopData.shopData.goods
-        goods.forEach((item,index)=>{
-            item.foods.forEach((childItem,cindex)=>{
+        this.data.commodityJsonList.forEach((item,index)=>{
+            item.goods.forEach((childItem,cindex)=>{
                 childItem['quantity'] = 0
-                childItem['pindex'] = index
-                childItem['cindex'] = cindex
             })
         })
         this.setData({
             interfaceList:[],
             shoptotal:0,
             shoppricesum:0,
-            commodityJsonList:shopData.shopData
+            commodityJsonList:this.data.defaultcommodityJsonList
         })
         this.hideModal()
     },
@@ -199,13 +209,15 @@ Page({
             mask: true
         });
         let interfaceList = []
+        console.log('this.data.interfaceList: ', this.data.interfaceList);
         this.data.interfaceList.forEach(item=>{
+            
             let interfaceDict = {};
             interfaceDict['name'] = item.name
             interfaceDict['price'] = item.price
             interfaceDict['quantity'] = item.quantity
             interfaceDict['cindex'] = item.cindex
-            // interfaceDict['image'] = item.image
+            interfaceDict['image'] = item.cover
             interfaceList.push(interfaceDict)
         })
         interfaceList= JSON.stringify(interfaceList)
@@ -276,56 +288,66 @@ Page({
         }
     },
     getUserInfo(){
-        wx.login({
-            success (res) {
-              if (res.code) {
-                  console.log('res.code: ', res.code);
-                //发起网络请求
-                https.GET({
-                    API_URL: "/api.php/paotui/product/list",
-                    success: (res) => {
-                    },
-                    fail: function () {
-                        console.log()
-                    }
-                })
-              } else {
-                console.log('登录失败！' + res.errMsg)
-              }
-            }
-        })
+        let _this = this
         // 查看是否授权
         wx.getSetting({
             success (res){
-            if (res.authSetting['scope.userInfo']) {
-                // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-                wx.getUserInfo({
-                success: function(res) {
-                    try {
-                        wx.setStorage({
-                            key:"userInfo",
-                            data:res.userInfo
-                          })
-                      } catch (e) { 
-                        //弹框提示
-                        wx.showToast({
-                          title: '用户数据获取失败，请检查相关配置，是否联网等',
-                          icon: 'none',
-                          duration: 2000
-                        });
-                      }
+                if (res.authSetting['scope.userInfo']) {
+                    // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+                    wx.getUserInfo({
+                        success: function(res) {
+                            try {
+                                console.log('res: ', res);
+                                wx.setStorage({
+                                    key:"userInfo",
+                                    data:res.userInfo
+                                })
+                            } catch (e) { 
+                                //弹框提示
+                                wx.showToast({
+                                    title: '用户数据获取失败，请检查相关配置，是否联网等',
+                                    icon: 'none',
+                                    duration: 2000
+                                });
+                            }
+                        }
+                    })
+                }else{
+                    
                 }
-                })
+            },
+            fail(r){
+                console.log('r: ', r);
             }
+        })
+        wx.login({
+            success (res) {
+                if (res.code) {
+                    let value = wx.getStorageSync('userInfo')
+                    wx.request({
+                        url: 'http://47.111.129.112/api.php/paotui/app/login',
+                        method: "POST",
+                        data: {
+                            code: res.code,
+                            nick_name:value.nickName ,
+                            head_img: value.avatarUrl,
+                        },
+                        success: function(res) {
+                            wx.setStorage({
+                                key:"userid",
+                                data:res.data.data
+                            })
+                        }
+                      })
+                } else {
+                    console.log('登录失败！' + res.errMsg)
+                }
             }
         })
     },
     toProductDetail(e){  //跳转商品详情页
-        delete e.currentTarget.dataset.foodsdata.ratings
-        let productDetail = JSON.stringify(e.currentTarget.dataset.foodsdata)
         wx.navigateTo({
-            url: '../prductDetails/productDetail?productData='+productDetail
-            //  url: '../logs/logs'
+            url: '../prductDetails/productDetail?productId='+e.currentTarget.dataset.foodsdata.id
           })
     },
 })

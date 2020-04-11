@@ -8,7 +8,8 @@ Page({
     data: {
         interfaceList:[],   //上一页用户传入的商品list
         shopSum:0,  //商品价格总和
-        receipt:1
+        receipt:1,
+        shoptotal:0
     },
 
     /**
@@ -19,7 +20,6 @@ Page({
         this.setData({
             interfaceList:interfaceList,
         });
-        console.log(this)
         this.totalpriceFn()
     },
 
@@ -32,15 +32,21 @@ Page({
     totalpriceFn(){ //计算商品总价
         let shoppriceList = [];
         let shopSum = 0
+        let shoptotalList = [];
+        let shoptotal = 0
         this.data.interfaceList.forEach(item => {
             shoppriceList.push(item.price*item.quantity)
+            shoptotalList.push(item.quantity)
         });
         shopSum = shoppriceList.reduce((n,m)=>{
             return n + m;
         })
-        console.log('shopSum: ', shopSum);
+        shoptotal = shoptotalList.reduce((n,m)=>{
+            return n + m;
+        })
         this.setData({
-            shopSum : shopSum
+            shopSum : shopSum,
+            shoptotal:shoptotal
         })
     },
     addAddressFn(){

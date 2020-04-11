@@ -48,8 +48,10 @@
         </view>
       </view>
       <view class="delivery-box">
-        <view >配送费 <text class="delivery-tips">(商品总数{{interfaceList.length}}件)</text></view>
-        <view class='text-price'>2</view>
+        <!-- <view >配送费 <text class="delivery-tips">(商品总数{{interfaceList.length}}件)</text></view>
+        <view class='text-price'>2</view> -->
+         <view ><text class="delivery-tips">(商品总数{{shoptotal}}件)</text></view>
+        <!-- <view class='text-price'>2</view> -->
       </view>
       <view class="subtotal-box">
         <view class='subtotal-main'>小计：<text class="text-price subtotal-main-price">{{shopSum}}</text></view>

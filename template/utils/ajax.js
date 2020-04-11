@@ -23,13 +23,15 @@ function request(method, requestHandler) {
   //注意：可以对params加密等处理  
   var params = requestHandler.params;
   var API_URL = requestHandler.API_URL;
+  const value = wx.getStorageSync('userid')
+  let token = value.token
   wx.request({
     url: `http://47.111.129.112/${API_URL}`,
     data: params,
     method: method, 
     header: {
       'content-type': 'application/json',
-      'token': "bua+B0Qeh2YMwNED+AN8K41EgFBJcuGwgrIbLHRj5PdWuw339Q9mTy2Tgs9/eZDH" // 默认值
+      'token':token // 默认值
     }, // 设置请求的 header  
     success: function (res) {
       //注意：可以对参数解密等处理  

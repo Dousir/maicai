@@ -66,6 +66,7 @@
   width: 120rpx;
   height: 120rpx;
   border-radius: 10rpx;
+  background-size: 100% 100%;
 }
 .commodity-item-left-text{
   margin-left: 15rpx;

@@ -3,6 +3,7 @@ const https = require('../../utils/ajax.js')
 Page({
   data: {
     cardCur: 0,
+    productId:'', //产品id
     swiperList: [{
       id: 0,
       type: 'image',
@@ -23,13 +24,37 @@ Page({
     product:{}
   },
   onLoad(option) {
-    console.log('option: ', option);
-    // console.log(eval('obj =' + option.productData))
-    // this.setData({
-    //   product:JSON.parse(option.productData)
-    // })
+    this.setData({
+      productId:option.productId
+    })
+    this.getProductDetail();
     this.towerSwiper('swiperList');
     // 初始化towerSwiper 传已有的数组名即可
+  },
+  getProductDetail(){   //获取产品详细信息
+    let productId = this.data.productId
+    https.GET({
+      params: {
+        id:productId
+      },
+      API_URL: "/api.php/paotui/product/info",
+      success: (res) => {
+        this.setData({
+          product:res.data.data,
+          swiperList:[
+            {
+              id: 0,
+              type: 'image',
+              url: res.data.data.cover
+            }
+          ]
+        })
+          console.log('res: ', res);
+      },
+      fail: function () {
+        console.log()
+      }
+    })
   },
   DotStyle(e) {
     this.setData({
