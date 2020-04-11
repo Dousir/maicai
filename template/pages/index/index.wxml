@@ -15,7 +15,7 @@
 <view class="VerticalBox">
 <!-- 左侧一级导航 -->
   <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}"  style="height:calc(100vh - 60px)">
-    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{commodityJsonList.goods}}" wx:for-index='index' wx:key='key' wx:for-item="item" bindtap='tabSelect' data-id="{{index}}">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{commodityJsonList}}" wx:for-index='index' wx:key='key' wx:for-item="item" bindtap='tabSelect' data-id="{{index}}">
      {{item.name}}
     </view>
   </scroll-view>
@@ -29,22 +29,21 @@
     </view>
   </view> -->
   <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
-  <!-- <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px - 90rpx)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain"> -->
     <view class="padding-top10 padding-left vericalmainItem" wx:key='childKey' wx:for="{{commodityJsonList.goods}}" wx:for-item="item" id="main-{{childIndex}}" wx:for-index='childIndex'>
       <view class='cu-bar solid-bottom bg-white'>
         <view class='action'>
           <text class='cuIcon-title text-green'></text> {{item.name}} </view>
       </view>
       <view class="cu-list menu-avatar">
-        <view class="cu-item padding-bottom-xs" bindtap='toProductDetail' data-foodsData="{{childItem}}" wx:for="{{item.foods}}" wx:key='itemKey'  wx:for-item='childItem' >
-          <view class="cu-avatar lg" style="background-image:url({{childItem.image}});"></view>
+        <view class="cu-item padding-bottom-xs"  wx:for="{{item.foods}}" wx:key='itemKey'  wx:for-item='childItem' >
+          <view class="cu-avatar lg" bindtap='toProductDetail' data-foodsData="{{childItem}}" style="background-image:url({{childItem.image}});"></view>
           <view class="content">
-            <view class="text-black">{{childItem.name}}</view>
-            <view class="text-gray text-sm flex">
+            <view class="text-black" bindtap='toProductDetail' data-foodsData="{{childItem}}" >{{childItem.name}}</view>
+            <view class="text-gray text-sm flex" bindtap='toProductDetail' data-foodsData="{{childItem}}" >
                 月销{{childItem.sellCount}}
             </view>
             <view class='commodity-price'>
-                <text class="text-price text-red">{{childItem.price}}</text>
+                <text class="text-price text-red" bindtap='toProductDetail' data-foodsData="{{childItem}}" >{{childItem.price}}</text>
                 <view class='commodity-num'>
                     <view wx:if="{{childItem.quantity>0}}">
                         <button class="cu-btn round sm  icon" bindtap='commodityCut' data-pidx='{{childIndex}}' data-cidx='{{index}}'>

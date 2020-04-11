@@ -24,7 +24,7 @@ function request(method, requestHandler) {
   var params = requestHandler.params;
   var API_URL = requestHandler.API_URL;
   wx.request({
-    url: `https://www.sudaone.cn/${API_URL}`,
+    url: `http://47.111.129.112/${API_URL}`,
     data: params,
     method: method, 
     header: {
@@ -33,7 +33,6 @@ function request(method, requestHandler) {
     }, // 设置请求的 header  
     success: function (res) {
       //注意：可以对参数解密等处理  
-      console.log(res, 'aaa')
       requestHandler.success(res)
     },
     fail: function () {

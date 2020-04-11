@@ -1,5 +1,6 @@
 const app = getApp();
 const shopData  = require('../../data/data.js')
+console.log('shopData: ', shopData);
 const https = require('../../utils/ajax.js')
 Page({
     data: {
@@ -8,7 +9,7 @@ Page({
         VerticalNavTop: 0,
         load: true,
         commodityAmount:0,    //菜品数量
-        commodityJsonList:{},   //模拟数据json
+        commodityJsonList:{},   //商品列表
         interfaceList:[],   //界面上点击加号存储商品
         shoptotal:0,    //商品总数
         shoppricesum:0, //商品价格总和
@@ -16,29 +17,17 @@ Page({
         searchInputValue:''
     },
     onLoad() {
-        this.getUserInfo()
         wx.showLoading({
             title: '加载中...',
             mask: true
         });
-        let goods = shopData.shopData.goods
-        goods.forEach((item,index)=>{
-            item.foods.forEach((childItem,cindex)=>{
-                childItem['quantity'] = 0
-                childItem['pindex'] = index
-                childItem['cindex'] = cindex
-            })
-        })
-        this.setData({
-            commodityJsonList:shopData.shopData
-        })
+        this.getUserInfo()
+        this.getProductList()
     },
     onReady() {
         wx.hideLoading()
     },
     getPerson:function(e){
-        console.log(this.data.openid);
-        console.log(e);
     },
     tabSelect(e) {
         this.setData({
@@ -48,7 +37,7 @@ Page({
         })
     },
     searchClick(){  //搜索商品
-        let arry = [];
+        let arry = []
         let searchInputValue = this.data.searchInputValue;
         let foodsList = this.data.commodityJsonList.goods;
         foodsList.forEach(item=>{
@@ -61,10 +50,23 @@ Page({
     },
     getProductList(){   //获取商品列表
         https.GET({
-            params: params,
-            API_URL: "api/order/search",
+            API_URL: "/api.php/paotui/product/list",
             success: (res) => {
-                console.log('res: ', res);
+                let resData = res.data.data
+                let keysName = Object.keys(res.data.data)
+                let resDataList = []
+                keysName.forEach((item,index)=>{
+                    let resDataDict = {}
+                    resDataDict['name'] = item
+                    resDataDict['id'] = index
+                    resDataDict['goods'] = resData[item]
+                    resDataList.push(resDataDict)
+                    
+                })
+                // console.log('resDataList: ', resDataList);
+                this.setData({
+                    commodityJsonList:resDataList
+                })
             },
             fail: function () {
               console.log()
@@ -106,12 +108,12 @@ Page({
         let data =  e.currentTarget.dataset.item
         let pIndex = data.pindex
         let cIndex = data.cindex
-        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity;
-        let amount =quantity+1; //数量加一
-        let oldcommodityJsonList,newcommodityJsonList;
-        oldcommodityJsonList = this.data.commodityJsonList;
-        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount;
-        newcommodityJsonList = oldcommodityJsonList;
+        let quantity = this.data.commodityJsonList.goods[pIndex].foods[cIndex].quantity
+        let amount =quantity+1 //数量加一
+        let oldcommodityJsonList,newcommodityJsonList
+        oldcommodityJsonList = this.data.commodityJsonList
+        oldcommodityJsonList.goods[pIndex].foods[cIndex].quantity = amount
+        newcommodityJsonList = oldcommodityJsonList
         this.setData({
             commodityJsonList:newcommodityJsonList
         })
@@ -191,24 +193,12 @@ Page({
         })
         this.hideModal()
     },
-    callphone(e){
-        var tel = e.currentTarget.dataset.tel;
-        wx.makePhoneCall({
-            phoneNumber: '18565652915',
-            success: function () {
-                console.log("拨号成功！")
-            },
-            fail: function () {
-                console.log("拨号失败！")
-            }
-        })
-    },
     tojiesuan(){    //去结算
         wx.showLoading({
             title: '加载中...',
             mask: true
         });
-        let interfaceList = [];
+        let interfaceList = []
         this.data.interfaceList.forEach(item=>{
             let interfaceDict = {};
             interfaceDict['name'] = item.name
@@ -241,7 +231,7 @@ Page({
             modalName: null
         })
     },
-    toUserCenter(){ //跳转到用户中心
+    toUserCenter(){     //跳转到用户中心
         wx.navigateTo({
             url:'../userCenter/userCenter',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
             success:function(){
@@ -285,9 +275,25 @@ Page({
             }
         }
     },
-
-
     getUserInfo(){
+        wx.login({
+            success (res) {
+              if (res.code) {
+                  console.log('res.code: ', res.code);
+                //发起网络请求
+                https.GET({
+                    API_URL: "/api.php/paotui/product/list",
+                    success: (res) => {
+                    },
+                    fail: function () {
+                        console.log()
+                    }
+                })
+              } else {
+                console.log('登录失败！' + res.errMsg)
+              }
+            }
+        })
         // 查看是否授权
         wx.getSetting({
             success (res){
@@ -300,7 +306,6 @@ Page({
                             key:"userInfo",
                             data:res.userInfo
                           })
-                        // wx.setStorageSync('userInfo', res.userInfo);
                       } catch (e) { 
                         //弹框提示
                         wx.showToast({
@@ -318,11 +323,9 @@ Page({
     toProductDetail(e){  //跳转商品详情页
         delete e.currentTarget.dataset.foodsdata.ratings
         let productDetail = JSON.stringify(e.currentTarget.dataset.foodsdata)
-        console.log('productDetail: ', productDetail);
         wx.navigateTo({
             url: '../prductDetails/productDetail?productData='+productDetail
             //  url: '../logs/logs'
           })
-        console.log(e)
     },
 })
