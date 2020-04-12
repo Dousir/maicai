@@ -9,20 +9,32 @@ Page({
    * 页面的初始数据
    */
   data: {
-    address:{},
+    address:{
+    },
     title:'新增收货地址',
-    modifyData:false
+    modifyData:false,
+    defaltAddress:false
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options.modifyData)
     if(options.modifyData != 'undefined'){
+      let modifyData = JSON.parse(options.modifyData)
+      console.log('modifyData: ', modifyData);
+      if(modifyData.default == 1){
+        this.setData({
+          defaltAddress:true
+        })
+      }else{
+        this.setData({
+          defaltAddress:false
+        })
+      }
       this.setData({
         title:'修改收货地址',
-        address:JSON.parse(options.modifyData),
+        address:modifyData,
         modifyData:true
       })
     }else{
@@ -33,7 +45,13 @@ Page({
       })
     }
   },
-
+  defaltAddress(e){
+    let value = e.detail.value
+    console.log('value: ', value);
+    this.setData({
+      defaltAddress:value
+    })
+  },
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -50,8 +68,6 @@ Page({
   loginForm(e){
     let value = wx.getStorageSync('userid')
     let submitData = e.detail.value
-    
-    // console.log('this.data.modifyData: ', this.data.modifyData);
     let url = ''
     if(!this.data.modifyData){
       url = "api.php/paotui/user/add_user_address"
@@ -59,6 +75,11 @@ Page({
       url = '/api.php/paotui/user/modify_user_address'
       submitData['user_id'] = value.user_id
       submitData['id'] = this.data.address.id
+    }
+    if(this.data.defaltAddress){  //设为默认地址   1是true 0是false
+      submitData['default'] = 1
+    }else{
+      submitData['default'] = 0
     }
     https.POST({
       params: submitData,
@@ -71,15 +92,49 @@ Page({
             duration: 2000
           })
         }else{
-          wx.showToast({
-            title: res.data.msg,
-            icon: 'none',
-            duration: 2000
+          wx.redirectTo({
+            url:"../addressList/addressList"
           })
         }
       },
       fail: function (res) {}
     })
+  },
+  deleteAddress(){
+    let address = this.data.address
+    let params = {
+      id:address.id
+    }
+    wx.showModal({
+      title: '提示',
+      content: '确定要删除吗？',
+      success: function (sm) {
+        if (sm.confirm) {
+          https.POST({
+            params: params,
+            API_URL: 'api.php/paotui/user/delete_user_address',
+            success: (res) => {
+              if(res.data.msg != 'success'){
+                wx.showToast({
+                  title: res.data.msg,
+                  icon: 'none',
+                  duration: 2000
+                })
+              }else{
+                wx.redirectTo({
+                  url:"../addressList/addressList"
+                })
+              }
+            },
+            fail: function (res) {}
+          })
+        } 
+        else if (sm.cancel) {
+            
+        }
+        }
+    })
+    
   },
   getUserLocation: function () {
         let _this = this;

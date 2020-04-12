@@ -23,18 +23,14 @@
   color: #666;
 }
 .address-icon{
-
-  padding-top: 20rpx;
   width: 60rpx;
   text-align: center;
   display: flex;
-  flex-direction: column;
-
+  align-items: center;
 }
 .cuIcon-write-icon{
   font-size: 40rpx;
   display: inline-block;
-
 }
 .addAddress-btn{
   position: fixed;

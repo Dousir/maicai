@@ -804,7 +804,7 @@ button.icon.lg {
 	justify-content: center;
 	box-sizing: border-box;
 	padding: 0rpx 16rpx;
-	height: 48rpx;
+	height: 34rpx;
 	font-family: Helvetica Neue, Helvetica, sans-serif;
 	white-space: nowrap;
 }
@@ -1297,9 +1297,10 @@ button.icon.lg {
 }
 
 .cu-list.menu-avatar>.cu-item .content>view:first-child {
-	font-size: 30rpx;
+	font-size: 28rpx;
 	display: flex;
-	align-items: center
+	align-items: center;
+	line-height: 32rpx;
 }
 
 .cu-list.menu-avatar>.cu-item .content .cu-tag.sm {

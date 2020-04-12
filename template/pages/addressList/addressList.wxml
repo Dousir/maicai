@@ -3,14 +3,13 @@
 	<view slot="content">管理收货地址</view>
 </cu-custom>
 <view class="addressList-box">
-  <view bindtap='gotoaddressDetils' wx:for='{{addressList}}' wx:key="key" data-item='{{item}}' class="address-item">
+  <view  wx:for='{{addressList}}' wx:key="key"  class="address-item">
     <view>
       <view class="address-item-text">{{item.user_address}}{{item.user_address_more}}</view>
-      <view class="address-item-name">{{item.user_name}} {{item.user_mobile}}</view>
+      <view class="address-item-name">{{item.user_name}} {{item.user_mobile}} <view class="cu-tag bg-orange" wx:if="{{item.default == 1}}">默认</view></view>
     </view>
-    <view class="address-icon solid-left">
+    <view class="address-icon solid-left" bindtap='gotoaddressDetils' data-item='{{item}}'>
       <text class="cuIcon-write cuIcon-write-icon"></text>
-      <text class="cuIcon-deletefill cuIcon-deletefill -icon"></text>
     </view>
   </view>
 </view>

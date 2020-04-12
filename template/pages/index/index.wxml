@@ -38,7 +38,7 @@
         <view class="cu-item padding-bottom-xs"  wx:for="{{item.goods}}" wx:key='itemKey' wx:for-index='itemkey'   wx:for-item='childItem' >
           <view class="cu-avatar lg" bindtap='toProductDetail' data-foodsData="{{childItem}}" style="background-image:url({{childItem.cover}});"></view>
           <view class="content">
-            <view class="text-black" bindtap='toProductDetail' data-foodsData="{{childItem}}" >{{childItem.name}}</view>
+            <view class="text-black" bindtap='toProductDetail' data-foodsData="{{childItem}}" >{{childItem.name}}</view> 
             <view class="text-gray text-sm flex" bindtap='toProductDetail' data-foodsData="{{childItem}}" >
                 月销{{childItem.sales}}
             </view>
