@@ -57,6 +57,7 @@ Page({
 
   },
   gotoaddressDetils(e){
+    console.log('e: ', e);
     wx.navigateTo({
       url:'../address/address?modifyData='+JSON.stringify(e.currentTarget.dataset.item),  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
       success:function(){
@@ -67,7 +68,7 @@ Page({
       complete:function(){
           wx.hideLoading()
       },      //结束后的回调(成功，失败都会执行)
-  })
+    })
   },
   /**
    * 页面相关事件处理函数--监听用户下拉动作

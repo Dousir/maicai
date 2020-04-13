@@ -86,7 +86,7 @@
             </view>
           </view>
           <view class='modify-icon'>
-            <text class="modify-icon-text cuIcon-write"></text>
+            <text class="modify-icon-text cuIcon-write" bindtap='toaddressDetail' data-item = "{{item}}"></text>
           </view>
         </view>
       </view>

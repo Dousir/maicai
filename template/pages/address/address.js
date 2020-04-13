@@ -20,7 +20,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(options.modifyData != 'undefined'){
+    if(options.modifyData != undefined && options.modifyData != 'undefined'){
+      console.log('options.modifyData: ', options.modifyData);
       let modifyData = JSON.parse(options.modifyData)
       console.log('modifyData: ', modifyData);
       if(modifyData.default == 1){
@@ -47,10 +48,18 @@ Page({
   },
   defaltAddress(e){
     let value = e.detail.value
-    console.log('value: ', value);
     this.setData({
       defaltAddress:value
     })
+  },
+  tohistory(){  //返回上一页
+    var pages = getCurrentPages(); //当前页面
+    var beforePage = pages[pages.length - 2]; //前一页
+    wx.navigateBack({
+      success: function () {
+        beforePage.onLoad(); // 执行前一个页面的onLoad方法
+      }
+    });
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

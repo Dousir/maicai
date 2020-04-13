@@ -96,21 +96,40 @@ Page({
         this.setData({
             addressDefault:e.currentTarget.dataset.item
         })
-        hideModal()
+        this.hideModal()
+    },
+    hideModal(e) {
+        this.setData({
+            modalName: null
+        })
+    },
+    toaddressDetail(e){  //跳转地址详情页
+        wx.navigateTo({
+            url:'../address/address?modifyData='+JSON.stringify(e.currentTarget.dataset.item),  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+            success:function(){
+            },        //成功后的回调；
+            fail:function(){
+      
+            },          //失败后的回调；
+            complete:function(){
+                wx.hideLoading()
+            },      //结束后的回调(成功，失败都会执行)
+        })
     },
 
     /**
      * 生命周期函数--监听页面显示
      */
     onShow: function () {
-
+        this.getAddressList()
     },
 
     /**
      * 生命周期函数--监听页面隐藏
      */
     onHide: function () {
-
+        this.hideModal()
+        
     },
 
     /**
