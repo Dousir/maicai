@@ -1,0 +1,10 @@
+<cu-custom bgColor="bg-gradual-green" isBack="{{false}}">
+	<view slot="content">微信授权</view>
+</cu-custom>
+
+<view class="setting-box">
+  <view>
+    <button class="cu-btn bg-green margin-tb-sm lg btnwidth" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+    <button class="cu-btn bg-grey margin-tb-sm lg btnwidth" >拒绝授权</button>
+  </view>
+</view>

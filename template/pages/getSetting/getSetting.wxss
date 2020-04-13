@@ -1,0 +1,11 @@
+/* pages/getSetting/getSetting.wxss */
+.setting-box{
+  width: 100%;
+  height: calc(100vh);
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center;     /* 垂直居中 */
+}
+.btnwidth{
+  width: 100%;
+}

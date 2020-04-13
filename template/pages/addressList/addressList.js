@@ -1,6 +1,5 @@
 // pages/addressList/addressList.js
 const https = require('../../utils/ajax.js')
-
 Page({
 
   /**

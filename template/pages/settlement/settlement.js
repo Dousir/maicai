@@ -9,14 +9,17 @@ Page({
         interfaceList:[],   //上一页用户传入的商品list
         shopSum:0,  //商品价格总和
         receipt:1,
-        shoptotal:0
+        shoptotal:0,
+        addressList:[],
+        addressDefault:{}
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-       let interfaceList = JSON.parse(options.data)
+        this.getAddressList()
+        let interfaceList = JSON.parse(options.data)
         this.setData({
             interfaceList:interfaceList,
         });
@@ -66,6 +69,34 @@ Page({
         this.setData({
             modalName: null
         })
+    },
+    getAddressList(){   //获取用户收货地址
+        https.GET({
+            API_URL: "api.php/paotui/user/get_user_address_list",
+            success: (res) => {
+                console.log('res12: ', res);
+                let resList = res.data.data
+                let defaultAddress = {}
+                resList.forEach(item=>{
+                    if(item.default == 1){
+                        defaultAddress = item
+                    }
+                })
+                this.setData({
+                    addressList:resList,
+                    addressDefault:defaultAddress
+                })
+            },
+            fail: function () {
+                console.log()
+            }
+        })
+    },
+    clickaddress(e){ //选中收货地址列表，并赋值给页面
+        this.setData({
+            addressDefault:e.currentTarget.dataset.item
+        })
+        hideModal()
     },
 
     /**

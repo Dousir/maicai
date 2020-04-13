@@ -7,9 +7,11 @@
   <view class="UCenter-bg" style="background:url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1585672989389&di=d910ff1e62abcaf98767c123d39bfbe9&imgtype=0&src=http%3A%2F%2Fpic1.win4000.com%2Fwallpaper%2Ff%2F5954a056c6cdd.jpg)">
     <view class="userinfo">    
       <view class="userinfo-avatar">      
-        <image src="{{userImg}}" class="userImg" />
+        <open-data type="userAvatarUrl"></open-data>
       </view>    
-      <view class="userinfo-nickname">{{userName}}</view>
+      <view class="userinfo-nickname">
+        <open-data type="userNickName">{{userNickName}}</open-data>
+      </view>
     </view>
   </view>
   <view class="padding flex text-center text-grey bg-white shadow-warp">

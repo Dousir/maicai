@@ -288,54 +288,19 @@ Page({
         }
     },
     getUserInfo(){
-        let _this = this
-        // 查看是否授权
-        wx.getSetting({
-            success (res){
-                if (res.authSetting['scope.userInfo']) {
-                    // 已经授权，可以直接调用 getUserInfo 获取头像昵称
-                    wx.getUserInfo({
-                        success: function(res) {
-                            try {
-                                console.log('res: ', res);
-                                wx.setStorage({
-                                    key:"userInfo",
-                                    data:res.userInfo
-                                })
-                            } catch (e) { 
-                                //弹框提示
-                                wx.showToast({
-                                    title: '用户数据获取失败，请检查相关配置，是否联网等',
-                                    icon: 'none',
-                                    duration: 2000
-                                });
-                            }
-                        }
-                    })
-                }else{
-                    
-                }
-            },
-            fail(r){
-                console.log('r: ', r);
-            }
-        })
         wx.login({
             success (res) {
                 if (res.code) {
-                    let value = wx.getStorageSync('userInfo')
                     wx.request({
                         url: 'http://47.111.129.112/api.php/paotui/app/login',
                         method: "POST",
                         data: {
                             code: res.code,
-                            nick_name:value.nickName ,
-                            head_img: value.avatarUrl,
                         },
                         success: function(res) {
                             wx.setStorage({
                                 key:"userid",
-                                data:res.data.data
+                                data:res
                             })
                         }
                       })

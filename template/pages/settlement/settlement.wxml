@@ -11,10 +11,10 @@
         </view>
         <view class="receipt-main-text-mian"  bindtap='showModal' data-target="RadioModal" wx:if="{{receipt!=0}}" >
           <view >
-            <view class="receipt-main-text-mian-top">沿江路101好</view>
+            <view class="receipt-main-text-mian-top">{{addressDefault.user_address}}--{{addressDefault.user_address_more}}</view>
             <view class="receipt-main-text-mian-bottom">
-              <text class="receipt-name">周先生</text>
-              <text class="receipt-pohone">18565652915</text>
+              <text class="receipt-name">{{addressDefault.user_name}}</text>
+              <text class="receipt-pohone">{{addressDefault.user_mobile}}</text>
             </view>
           </view>
           <text class="cuIcon-right receipt-main-text-mian-cion"></text>
@@ -77,12 +77,12 @@
 <view class="cu-modal {{modalName=='RadioModal'?'show':''}}" bindtap="hideModal">
   <view class="cu-dialog" catchtap>
       <view class="cu-list menu text-left address-box"  scroll-y scroll-with-animation>
-        <view class="cu-item address-item-list" wx:for="{{5}}" wx:key>
+        <view class="cu-item address-item-list" wx:for="{{addressList}}" wx:key='key' bindtap='clickaddress' wx:for-item="item" data-item = "{{item}}">
           <view class='address'>
-            <view class="address-top">沿江路101号11暗色调就</view>
+            <view class="address-top">{{item.user_address}}--{{item.user_address_more}}</view>
             <view class="address-bottom">
-              <text>周先生</text>
-              <text>18565652915</text>
+              <text>{{item.user_name}}</text>
+              <text>{{item.user_mobile}}</text>
             </view>
           </view>
           <view class='modify-icon'>
