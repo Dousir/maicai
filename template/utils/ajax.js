@@ -18,55 +18,60 @@ function GET(requestHandler) {
 function POST(requestHandler) {
   request('POST', requestHandler)
 }
-
+const reqQueue = []
 function request(method, requestHandler) {
   //注意：可以对params加密等处理  
   var params = requestHandler.params;
   var API_URL = requestHandler.API_URL;
   const value = wx.getStorageSync('userid')
-  let requestCode = value.data.code
-  let requestToken = value.data.data.token
-  if(requestCode == 1111){
-    wx.login({
-      success (res) {
-          if (res.code) {
-            wx.request({
-                url: 'http://47.111.129.112/api.php/paotui/app/login',
-                method: "POST",
-                data: {
-                    code: res.code,
-                },
-                success: function(res) {
-                  requestToken = res.data.data.token
-                }
-            })
+  wx.request({
+    url: `https://www.sudaone.cn/${API_URL}`,
+    data: params,
+    method: method, 
+    header: {
+      'content-type': 'application/json',
+      'token': value.data.data.token
+      // 默认值
+    }, // 设置请求的 header  
+    success: function (res) {
+      if(res.data.code == 1111){
+        reqQueue.push(request)
+        wx.login({
+          success (res) {
+              if (res.code) {
+                wx.request({
+                    url: 'https://www.sudaone.cn/api.php/paotui/app/login',
+                    method: "POST",
+                    data: {
+                        code: res.code,
+                    },
+                    success: function(res) {
+                      wx.setStorage({
+                        key:"userid",
+                        data:res
+                      })
+                      reqQueue.forEach((item) => {
+                        item()
+                      })
+                    }
+                })
+              }
+              else {
+                  console.log('登录失败！' + res.errMsg)
+              }
           }
-          else {
-              console.log('登录失败！' + res.errMsg)
-          }
+        })
       }
-    })
-  }
-wx.request({
-  url: `http://47.111.129.112/${API_URL}`,
-  data: params,
-  method: method, 
-  header: {
-    'content-type': 'application/json',
-    'token': requestToken
-    // 默认值
-  }, // 设置请求的 header  
-  success: function (res) {
-    //注意：可以对参数解密等处理  
-    requestHandler.success(res)
-  },
-  fail: function () {
-    requestHandler.fail()
-  },
-  complete: function () {
-    // complete  
-  }
-})
+      //注意：可以对参数解密等处理  
+      requestHandler.success(res)
+    },
+    fail: function () {
+      requestHandler.fail()
+    },
+    complete: function () {
+      // complete  
+    }
+  })
 }
 module.exports = {
   GET: GET,

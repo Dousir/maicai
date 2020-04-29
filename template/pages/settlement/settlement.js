@@ -11,13 +11,16 @@ Page({
         receipt:1,
         shoptotal:0,
         addressList:[],
-        addressDefault:{}
+        addressDefault:{},
+        dispatchTime:'',    //派送时间
+        addressId:0,
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
+        this.getTimeFn()
         this.getAddressList()
         let interfaceList = JSON.parse(options.data)
         this.setData({
@@ -32,6 +35,8 @@ Page({
     onReady: function () {
 
     },
+    
+    
     totalpriceFn(){ //计算商品总价
         let shoppriceList = [];
         let shopSum = 0
@@ -51,6 +56,59 @@ Page({
             shopSum : shopSum,
             shoptotal:shoptotal
         })
+    },
+    foshop(){    //下单接口
+        let goods = {};
+        this.data.interfaceList.forEach((item,index)=>{
+            goods[item.id] = item.quantity
+        })
+        let userAddressId = JSON.parse(this.data.addressId);
+        let params = {}
+        params['goods'] = goods
+        params['user_address_id'] = userAddressId
+        params['remark'] = '' 
+        https.POST({
+            params: params,
+            API_URL: '/api.php/paotui/order/shop',
+            success: (res) => {
+                this.fopay(res.data.data.id)
+            },
+            fail: function (res) {}
+          })
+    },
+    fopay(data){    //支付接口
+        console.log('data: ', data);
+        let params = {
+            order_id:JSON.parse(data)
+        }
+        https.POST({
+            params: params,
+            API_URL: '/api.php/paotui/order/pay',
+            success: (res) => {
+                console.log('res: ', res.data.data);
+                wx.requestPayment(
+                    {
+                    
+                    'timeStamp': JSON.stringify(res.data.data.timeStamp),   //时间戳
+                    'nonceStr': res.data.data.nonceStr,     //随机数,
+                    'package': res.data.data.package,       //统一下单接口返回的 prepay_id 参数值,
+                    'signType': 'MD5',
+                    'paySign': res.data.data.sign,      //签名,
+                    'success':function(res){
+                        console.log('res1:', res);
+                    },
+                    'fail':function(res){
+                        console.log('res2:', res);
+
+                    },
+                    'complete':function(res){
+                        console.log('res3:', res);
+
+                    }
+                })
+            },
+            fail: function (res) {}
+          })
     },
     addAddressFn(){
         wx.navigateTo({
@@ -82,9 +140,11 @@ Page({
                         defaultAddress = item
                     }
                 })
+                console.log(defaultAddress)
                 this.setData({
                     addressList:resList,
-                    addressDefault:defaultAddress
+                    addressDefault:defaultAddress,
+                    addressId:JSON.parse(defaultAddress.id)
                 })
             },
             fail: function () {
@@ -92,9 +152,26 @@ Page({
             }
         })
     },
-    clickaddress(e){ //选中收货地址列表，并赋值给页面
+    getTimeFn(){
+        var date = new Date();
+        console.log('date: ', date);
+        var hour=date.getHours();
+        console.log('hour: ', hour);
+        var minute=date.getMinutes();
+        console.log('minute: ', minute);
+        let dispatchTime = (hour+1)+':'+minute
+        if(hour>=20){
+            dispatchTime = '明天早晨9点'
+        }
         this.setData({
-            addressDefault:e.currentTarget.dataset.item
+            dispatchTime:dispatchTime
+        })
+    },
+    clickaddress(e){ //选中收货地址列表，并赋值给页面
+
+        this.setData({
+            addressDefault:e.currentTarget.dataset.item,
+            addressId:JSON.parse(e.currentTarget.dataset.item.id)
         })
         this.hideModal()
     },

@@ -4,42 +4,29 @@
 	<view slot="content">订单详情</view>
 </cu-custom>
 <view class="commodity-box bg-white">
-    <view class="commodity-list-title solid-bottom">豆森科技</view>
+    <view class="commodity-list-title solid-bottom">喜乐送线上超市</view>
     <view class='commodity-list-box '>
       <view class="solid-bottom commodity-list-box-b">
-        <view class="commodity-list-item "wx:key='key'>
+        <view class="commodity-list-item "wx:key='key' wx:for="{{orderDetail.goods}}">
           <view class="commodity-item-left">
-            <view class="commodity-item-left-img" style="background-image:url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2651734763,4188440904&fm=26&gp=0.jpg);"></view>
+            <view class="commodity-item-left-img" style="background-image:url(https://www.sudaone.cn{{item.goods_img}});"></view>
             <view class="commodity-item-left-text">
-              <view class="commodity-item-left-text-name">修水哨子</view>
-              <view class="commodity-item-left-text-fenliang">500g</view>
-              <view class="commodity-item-left-text-quantity">X 2</view>
+              <view class="commodity-item-left-text-name">{{item.goods_name}}</view>
+              <!-- <view class="commodity-item-left-text-fenliang">500g</view> -->
+              <view class="commodity-item-left-text-quantity">X {{item.goods_number}}</view>
             </view>
           </view>
           <view class="commodity-item-right">
-            <text class="text-price commodity-item-price">100</text>
-          </view>
-        </view>
-        <view class="commodity-list-item "wx:key='key'>
-          <view class="commodity-item-left">
-            <view class="commodity-item-left-img" style="background-image:url(https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2651734763,4188440904&fm=26&gp=0.jpg);"></view>
-            <view class="commodity-item-left-text">
-              <view class="commodity-item-left-text-name">修水哨子</view>
-              <view class="commodity-item-left-text-fenliang">500g</view>
-              <view class="commodity-item-left-text-quantity">X 2</view>
-            </view>
-          </view>
-          <view class="commodity-item-right">
-            <text class="text-price commodity-item-price">100</text>
+            <text class="text-price commodity-item-price">{{item.goods_price/100}}</text>
           </view>
         </view>
       </view>
       <view class="delivery-box">
-        <view >配送费 <text class="delivery-tips">(商品总数2件)</text></view>
-        <view class='text-price'>2</view>
+        <view class="">配送费 <text class='text-price'>0</text> <text class="delivery-tips">(商品总数{{orderDetail.goods.length}}件)</text></view>
+        
       </view>
       <view class="subtotal-box">
-        <view class='subtotal-main'>小计：<text class="text-price subtotal-main-price">100</text></view>
+        <view class='subtotal-main'>小计：<text class="text-price subtotal-main-price">{{orderDetail.order_price}}</text></view>
       </view>
     </view>
     <view class="callbusiness" bindtap='callbusiness'>
@@ -52,20 +39,20 @@
       配送信息
     </view>
     <view class="order-info-main">
-      <view class="order-info-item">
+      <!-- <view class="order-info-item">
         <text class="order-info-item-left">期望时间</text>
         <text class="order-info-item-right">立即配送</text>
-      </view>
+      </view> -->
       <view class="order-info-item">
         <text class="order-info-item-left">配送地址</text>
         <view class="order-info-item-right">
-          <view >江西省九江市修水县沿江路古尚州131号2楼202</view>
-          <view >周先森 185****2123</view>
+          <view >{{orderDetail.user_address_info}}</view>
+          <view >{{orderDetail.user_name}} {{orderDetail.user_mobile}}</view>
         </view>
       </view>
       <view class="order-info-item">
         <text class="order-info-item-left">配送服务</text>
-        <text class="order-info-item-right">豆森科技</text>
+        <text class="order-info-item-right">修水喜乐送线上超市</text>
       </view>
     </view>
   </view>
@@ -76,15 +63,15 @@
     <view class="order-info-main">
       <view class="order-info-item">
         <text class="order-info-item-left">订单号码</text>
-        <text class="order-info-item-right">7312 1298 1231 2312 3432 9</text>
+        <text class="order-info-item-right">{{orderDetail.order_sn}}</text>
       </view>
       <view class="order-info-item">
         <text class="order-info-item-left">下单时间</text>
-        <text class="order-info-item-right">2020-01-24 23:31:22</text>
+        <text class="order-info-item-right">{{orderDetail.create_time}}</text>
       </view>
       <view class="order-info-item">
         <text class="order-info-item-left">支付方式</text>
-        <text class="order-info-item-right">在线支付</text>
+        <text class="order-info-item-right">微信支付</text>
       </view>
     </view>
   </view>

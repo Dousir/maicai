@@ -3,8 +3,8 @@
 </cu-custom>
 <view class="product-img-box">
   <swiper class="screen-swiper {{DotStyle?'square-dot':'round-dot'}}" indicator-dots="true" circular="true" autoplay="true" interval="5000" duration="500">
-    <swiper-item wx:for="{{swiperList}}" wx:key="key">
-      <image src="{{item.url}}" mode="aspectFill" wx:if="{{item.type=='image'}}"></image>
+    <swiper-item wx:for="{{swiperList}}" wx:key="key" wx:for-index="inedx" class="swiper-item-box"  bindtap='previewImg' >
+      <image src="{{item.url}}"  wx:if="{{item.type=='image'}}" class="swiper-item-img" data-index='{{index}}'></image>
       <video src="{{item.url}}" autoplay loop muted show-play-btn="{{false}}" controls="{{false}}" objectFit="cover" wx:if="{{item.type=='video'}}"></video>
     </swiper-item>
   </swiper>

@@ -97,12 +97,6 @@ image {
           图片
  ==================== */
 
-image {
-	max-width: 100%;
-	display: inline-block;
-	position: relative;
-	z-index: 0;
-}
 
 image.loading::before {
 	content: "";
@@ -133,7 +127,14 @@ image.loading::after {
 	animation: cuIcon-spin 2s infinite linear;
 	display: block;
 }
-
+.f-l{
+	float: left;
+}
+.f-r{
+	float: right;
+}
+.clear{clear:both}
+.clearfix:after{clear:both;visibility:hidden;height:0;content:"";display:block}
 .response {
 	width: 100%;
 }
@@ -1270,9 +1271,7 @@ button.icon.lg {
 	position: relative;
 	display: flex;
 	padding-right: 10rpx;
-	height: 170rpx;
 	background-color: var(--white);
-	justify-content: flex-end;
 	align-items: center
 }
 
@@ -2602,9 +2601,6 @@ swiper.round-dot .wx-swiper-dot.wx-swiper-dot-active {
 	height: 18rpx;
 }
 
-.screen-swiper {
-	min-height: 375rpx;
-}
 
 .screen-swiper image,
 .screen-swiper video,

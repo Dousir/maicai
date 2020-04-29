@@ -35,3 +35,16 @@
   line-height: 50rpx;
   text-align: justify;
 }
+.swiper-item-img{
+  width: 80% !important;
+  position: relative;
+  z-index: 999;
+}
+.swiper-item-box{
+  display: flex;
+  justify-content: center;
+  position: relative !important;
+}
+.screen-swiper{
+  min-height: 600rpx;
+}

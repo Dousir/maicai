@@ -91,6 +91,21 @@
 .commodity-amount{
     margin: 0 10rpx;
 }
+.productDetail-box{
+  display: flex;
+  justify-content: space-between;
+}
+.productAcatar{
+  width: 140rpx;
+  height: 140rpx;
+  font-size: 2em;
+  background-size: 100% 100%;
+  margin-left: 30rpx;
+}
+.productText-box{
+  width: calc(100% - 96rpx - 60rpx - 40rpx );
+  line-height: 1.6em;
+}
 .shopcart-box{
   position: fixed;
   width: 90%;

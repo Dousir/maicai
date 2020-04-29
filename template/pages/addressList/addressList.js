@@ -1,5 +1,6 @@
 // pages/addressList/addressList.js
 const https = require('../../utils/ajax.js')
+const app = getApp();
 Page({
 
   /**
@@ -23,13 +24,22 @@ Page({
 
   },
   getAddressList(){
+    let that = this;
     https.GET({
       API_URL: "api.php/paotui/user/get_user_address_list",
       success: (res) => {
           console.log('res: ', res);
-          this.setData({
-            addressList:res.data.data
-          })
+          if(res.data.code == 1111){
+            console.log(1)
+            console.log(app)
+            app.userlogin()
+            //that.getAddressList()
+          }else{
+            this.setData({
+              addressList:res.data.data
+            })
+          }
+          
       },
       fail: function () {
         console.log()
@@ -57,7 +67,6 @@ Page({
 
   },
   gotoaddressDetils(e){
-    console.log('e: ', e);
     wx.navigateTo({
       url:'../address/address?modifyData='+JSON.stringify(e.currentTarget.dataset.item),  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
       success:function(){

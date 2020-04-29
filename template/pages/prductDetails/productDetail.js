@@ -4,26 +4,14 @@ Page({
   data: {
     cardCur: 0,
     productId:'', //产品id
-    swiperList: [{
-      id: 0,
-      type: 'image',
-      url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586359063366&di=af11146210da4920614adfa7d1d03115&imgtype=0&src=http%3A%2F%2Fwww.ce.cn%2Fcysc%2Fsp%2Finfo%2F201203%2F20%2FW020120320399021005135.jpg'
-    }, {
-      id: 1,
-        type: 'image',
-        url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586359063366&di=f6d5ffdf363c3a0b5b4a5df841804a70&imgtype=0&src=http%3A%2F%2Fimg008.hc360.cn%2Fy3%2FM02%2FE3%2F69%2FwKhQh1V_gliER2WqAAAAAJ_VDeg053.jpg',
-    }, {
-      id: 2,
-      type: 'image',
-      url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586359063366&di=1f20c92c2c663d849e3f6fe577035c9b&imgtype=0&src=http%3A%2F%2Fimg37.ddimg.cn%2Fimgother1%2F85%2F2%2F60308707_2.jpg'
-    }, {
-      id: 3,
-      type: 'image',
-      url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586359063366&di=10e806b396d23a3923b721cd2e017031&imgtype=0&src=http%3A%2F%2Fec4.images-amazon.com%2Fimages%2FI%2F81QJGgDJklL._SL1500_.jpg'
-    }],
+    swiperList: [],
     product:{}
   },
   onLoad(option) {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
     this.setData({
       productId:option.productId
     })
@@ -39,6 +27,7 @@ Page({
       },
       API_URL: "/api.php/paotui/product/info",
       success: (res) => {
+        wx.hideLoading()
         this.setData({
           product:res.data.data,
           swiperList:[
@@ -77,6 +66,21 @@ Page({
     }
     this.setData({
       swiperList: list
+    })
+  },
+  previewImg:function(e){
+    var index = 0;
+    var imgArr = this.data.swiperList;
+    let urlList = [];
+    imgArr.forEach(element => {
+      urlList.push(element.url)
+    });
+    wx.previewImage({
+      current: urlList[index],     //当前图片地址
+      urls: urlList,               //所有要预览的图片的地址集合 数组形式
+      success: function(res) {},
+      fail: function(res) {},
+      complete: function(res) {},
     })
   },
   // towerSwiper触摸开始

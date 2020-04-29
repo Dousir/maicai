@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
@@ -25,7 +25,7 @@
 	},
 	"compileType": "miniprogram",
 	"libVersion": "2.4.2",
-	"appid": "wx790474a52355cdf0",
+	"appid": "wxc8a0967ac83fc693",
 	"projectname": "maicai",
 	"debugOptions": {
 		"hidedInDevtools": []

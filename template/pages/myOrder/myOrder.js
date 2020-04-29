@@ -7,21 +7,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-    orderList:[1],
+    orderList:[], //订单列表
     TabCur: 0,
     scrollLeft:0,
-    tabName:['待付款','待送货','我的订单'],
-    status:0
+    tabName:['待付款','待送货','已完成'],
+    status:0,
+    page:1,  //分页
+    last_page:0,
+    orderImg:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log('options: ', options.tabIndex);
-    this.setData({
-      TabCur: options.tabIndex
-    })
+    this.getOrderList()
   },
 
   /**
@@ -44,9 +44,39 @@ Page({
   onHide: function () {
 
   },
-  gotoDeatils(){  //跳转到订单详情页
+  getOrderList(){   //获取订单列表
+    let params = {
+      page:this.data.page
+    }
+    https.POST({
+      params: params,
+      API_URL: "/api.php/paotui/order/my_orders",
+      success: (res) => {
+        let orderImg = []
+        res.data.data.data.forEach(item=>{
+          console.log('item: ', item.goods[0]);
+          orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
+        })
+        console.log('orderImg: ', orderImg);
+          this.setData({
+            orderImg:orderImg,
+            orderList:res.data.data.data,
+            last_page:res.data.data.last_page
+          })
+      },
+      fail: function () {
+        console.log()
+      }
+    })
+  },
+  gotoDeatils(e){  //跳转到订单详情页
+    let goodsList =  e.currentTarget.dataset.item
+    wx.setStorage({
+      key:"orderDrtail",
+      data:goodsList
+    })
     wx.navigateTo({
-      url:'../orderDetails/orderDetails',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+      url:'../orderDetails/orderDetails',
       success:function(){
       },        //成功后的回调；
       fail:function(){
@@ -57,18 +87,11 @@ Page({
       },      //结束后的回调(成功，失败都会执行)
     })
   },
-  tabSelect(e) {  //nav切换
-    console.log('e: ', e);
-    this.setData({
-      TabCur: e.currentTarget.dataset.id,
-      scrollLeft: (e.currentTarget.dataset.id-1)*60
-    })
-  },
   cuidanClickFn(){
         wx.showToast({
 
             title:"催促送货小哥",
-            duration: 2000,//提示的延迟时间，单位毫秒，默认：1500 
+            duration: 4000,//提示的延迟时间，单位毫秒，默认：1500 
       
             mask: false,//是否显示透明蒙层，防止触摸穿透，默认：false 
       
@@ -79,6 +102,9 @@ Page({
             complete:function(){}
       
           })
+  },
+  requestRefund(){  //申请退款
+
   },
 
   /**
@@ -99,7 +125,48 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    let page = this.data.page
+    let last_page = this.data.last_page
+    if(page != last_page){
+      page++
+      this.setData({
+        page:page
+      })
+      let params = {
+        page : this.data.page
+      }
+      https.POST({
+        params: params,
+        API_URL: "/api.php/paotui/order/my_orders",
+        success: (res) => {
+          res.data.data.data.forEach(item=>{
+            console.log('item: ', item.goods[0]);
+            if(item.goods[0] != undefined){
+              console.log(111)
+              this.data.orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
+            }
+          })
+          res.data.data.data.forEach(item=>{
+            this.data.orderList.push(item)
+          })
+          this.setData({
+            orderImg:this.data.orderImg,
+            orderList:this.data.orderList,
+            last_page:res.data.data.last_page
+          })
+          console.log(this.data.orderImg)
+        },
+        fail: function () {
+          console.log()
+        }
+      })
+    }else{
+      wx.showToast({
+        title: '没有更多订单了',
+        // icon: 'success',
+        duration: 2000
+    })
+    }
   },
 
   /**

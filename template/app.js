@@ -2,13 +2,38 @@
 App({
   callBusiness:function(e){
     wx.makePhoneCall({
-        phoneNumber: '18565652915',
+        phoneNumber: '0792-7223887',
         success: function () {
             console.log("拨号成功！")
         },
         fail: function () {
             console.log("拨号失败！")
         }
+    })
+  },
+  userlogin:function(){
+    wx.login({
+      success (res) {
+        console.log('res:',res)
+          if (res.code) {
+            wx.request({
+                url: 'https://www.sudaone.cn/api.php/paotui/app/login',
+                method: "POST",
+                data: {
+                    code: res.code,
+                },
+                success: function(res) {
+                  wx.setStorage({
+                    key:"userid",
+                    data:res
+                  })
+                }
+            })
+          }
+          else {
+              console.log('登录失败！' + res.errMsg)
+          }
+      }
     })
   },
   onLaunch: function() {

@@ -14,21 +14,8 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
-const callphone = ()=>{
-  
-    var tel = e.currentTarget.dataset.tel;
-    wx.makePhoneCall({
-        phoneNumber: '18565652915',
-        success: function () {
-            console.log("拨号成功！")
-        },
-        fail: function () {
-            console.log("拨号失败！")
-        }
-    })
-}
-
 module.exports = {
   formatTime: formatTime,
-  callphone:callphone
+  userlogin:userlogin,
+  callphone:callphone,
 }

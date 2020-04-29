@@ -21,16 +21,16 @@
         </view>
       </view>
       <view class="receipt-time-box">
-        <view class="receipt-time-main"> 
-          <text class="text-bold line-black">立即送出</text>
-          <text class="line-green">大约10:42送达</text>
+        <view class="receipt-time-main clearfix"> 
+          <text class="text-bold line-black f-l" wx:if="{{dispatchTime != '明天早晨9点'}}">立即送出</text>
+          <text class="line-green f-r">大约{{dispatchTime}}送达</text>
         </view>
         <view  class="receipt-time-tips"> 为减少接触，封闭管理时，请在地址中更新具体取商品地点</view>
       </view>
     </view>
   </view>
   <view class="commodity-box bg-white">
-    <view class="commodity-list-title solid-bottom">豆森科技</view>
+    <view class="commodity-list-title solid-bottom">喜乐送线上超市</view>
     <view class='commodity-list-box '>
       <view class="solid-bottom commodity-list-box-b">
         <view class="commodity-list-item " wx:for="{{interfaceList}}" wx:key='key' wx:for-item='item'>
@@ -67,7 +67,7 @@
   <view class="pay-price">
     <text class="text-price pay-price-text">{{shopSum}}</text>
   </view>
-  <view class="pay-btn">
+  <view class="pay-btn" bindtap="foshop">
     <button class="pay-btn-min bg-green">支付</button>
   </view>
 </view>

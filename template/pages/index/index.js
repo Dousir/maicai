@@ -1,6 +1,4 @@
 const app = getApp();
-// const shopData  = require('../../data/data.js')
-// console.log('shopData: ', shopData);
 const https = require('../../utils/ajax.js')
 Page({
     data: {
@@ -16,19 +14,58 @@ Page({
         // searchInputValue:'',
         usercode:'', //每次用户登录 获取code发给后台获取openid
         defaultcommodityJsonList:[],
+        catesList:[],   //产品分类
+        productList:[], //数据列表
     },
     onLoad() {
+        this.getUserInfo()
+        this.getcatesList()
+    },
+    onReady() {
+    },
+    getcatesList(){ //获取产品分类
+        https.GET({
+            API_URL: "/api.php/paotui/product/cates",
+            success: (res) => {
+                console.log('res.data.data: ', res.data.data);
+                res.data.data.forEach((item,index)=>{
+                    this.getsub_list(item,index)
+                })
+            },
+            fail: function () {
+              console.log()
+            }
+        })
+    },
+    getsub_list(data,index){  //根据分类获取产品
         wx.showLoading({
             title: '加载中...',
             mask: true
         });
-        this.getUserInfo()
-        this.getProductList()
-    },
-    onReady() {
-        wx.hideLoading()
-    },
-    getPerson:function(e){
+        https.GET({
+            API_URL: "/api.php/paotui/product/sub_list?cid="+data.cate_id,
+            success: (res) => {
+                res.data.data.forEach(item=>{
+                    item['quantity'] = 0;
+                    item['pid'] = data.cate_id
+                })
+                let params = {
+                    name:data.name,
+                    cate_id:data.cate_id,
+                    goods:res.data.data
+                }
+                this.data.productList.push(params)
+                this.data.defaultcommodityJsonList.push(params)
+                this.setData({
+                    productList:this.data.productList,
+                    defaultcommodityJsonList: this.data.defaultcommodityJsonList
+                })
+                wx.hideLoading()
+            },
+            fail: function () {
+              console.log()
+            }
+        })
     },
     tabSelect(e) {
         this.setData({
@@ -49,113 +86,85 @@ Page({
             })
         })
     },
-    getProductList(){   //获取商品列表
-        https.GET({
-            API_URL: "/api.php/paotui/product/list",
-            success: (res) => {
-                let resData = res.data.data
-                let keysName = Object.keys(res.data.data)
-                let resDataList = [] 
-                keysName.forEach((item,index)=>{
-                    resData[item].forEach((childItem,childIndex)=>{
-                        childItem['pid'] = index
-                        childItem['quantity'] = 0
-                    })
-                    let resDataDict = {}
-                    resDataDict['name'] = item
-                    resDataDict['id'] = index
-                    resDataDict['goods'] = resData[item]
-                    resDataList.push(resDataDict)
+    commodityCut(e){     //界面数量减一
+        let pId = e.currentTarget.dataset.pid;   //获取分类id
+        let cId = e.currentTarget.dataset.cid;   //获取商品id
+        this.data.productList.forEach(item=>{
+            if(item.cate_id == pId){
+                console.log('item: ', item);
+                item['goods'].forEach(childItem=>{
+                   if(childItem.id == cId || childItem.quantity<1){
+                    childItem.quantity--
+                   }
                 })
-                this.setData({
-                    commodityJsonList:resDataList,
-                    defaultcommodityJsonList:resDataList        //用作清空购物车
-                })
-            },
-            fail: function () {
-              console.log()
             }
         })
-    },
-    commodityCut(e){     //界面数量减一
-        let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
-        let cIndex = e.currentTarget.dataset.cidx;   //详细菜品,获取下标
-        let quantity = this.data.commodityJsonList[pIndex].goods[cIndex].quantity;
-        if(quantity<1){
-            return
-        }
-        let amount =quantity-1; //数量加一
-        let oldcommodityJsonList,newcommodityJsonList;
-        oldcommodityJsonList = this.data.commodityJsonList;
-        oldcommodityJsonList[pIndex].goods[cIndex].quantity = amount;
-        newcommodityJsonList = oldcommodityJsonList;
         this.setData({
-            commodityJsonList:newcommodityJsonList
+            productList : this.data.productList
         })
         this.shopcartFn()
         
     },
     commodityAdd(e){    //界面数量加一
-        let pIndex = e.currentTarget.dataset.pidx;   //一级导航，获取下标
-        let cIndex = e.currentTarget.dataset.cidx;   //详细菜品,获取下标
-        let quantity = this.data.commodityJsonList[pIndex].goods[cIndex].quantity;
-        
-        let amount =quantity+1; //数量加一
-        let oldcommodityJsonList,newcommodityJsonList;
-        oldcommodityJsonList = this.data.commodityJsonList;
-        oldcommodityJsonList[pIndex].goods[cIndex].quantity = amount;
-        newcommodityJsonList = oldcommodityJsonList;
+        let pId = e.currentTarget.dataset.pid;   //获取分类id
+        let cId = e.currentTarget.dataset.cid;   //获取商品id
+        this.data.productList.forEach(item=>{
+            if(item.cate_id == pId){
+                console.log('item: ', item);
+                item['goods'].forEach(childItem=>{
+                   if(childItem.id == cId){
+                    childItem.quantity++
+                   }
+                })
+            }
+        })
         this.setData({
-            commodityJsonList:newcommodityJsonList
+            productList : this.data.productList
         })
         this.shopcartFn()
     },
     shopcartAdd(e){  //购物车数量加一
         let data =  e.currentTarget.dataset.item
-        let pIndex = data.pid
-        let cIndex = data.id
-        let commodityJsonList = this.data.commodityJsonList
-        commodityJsonList.forEach(item=>{
-            if(item.id == pIndex){
-                item.goods.forEach(childItem=>{
-                    if(childItem.id == cIndex){
-                        childItem.quantity++
-                    }
+        let pId = data.pid
+        let cId = data.id
+        this.data.productList.forEach(item=>{
+            if(item.cate_id == pId){
+                item['goods'].forEach(childItem=>{
+                   if(childItem.id == cId){
+                    childItem.quantity++
+                   }
                 })
             }
         })
         this.setData({
-            commodityJsonList:commodityJsonList
+            productList:this.data.productList
         })
         this.shopcartFn()
     },
     shopcartcut(e){  //购物车数量减一
         let data =  e.currentTarget.dataset.item
-        if(data.quantity<1){
-            return
-        }
-        let pIndex = data.pid
-        let cIndex = data.id
-        let commodityJsonList = this.data.commodityJsonList
-        commodityJsonList.forEach(item=>{
-            if(item.id == pIndex){
-                item.goods.forEach(childItem=>{
-                    if(childItem.id == cIndex){
-                        childItem.quantity--
-                    }
+        let pId = data.pid
+        let cId = data.id
+        this.data.productList.forEach(item=>{
+            if(item.cate_id == pId){
+                item['goods'].forEach(childItem=>{
+                   if(childItem.id == cId || childItem.quantity<1){
+                    childItem.quantity--
+                   }
                 })
             }
         })
         this.setData({
-            commodityJsonList:commodityJsonList
+            productList:this.data.productList
         })
         this.shopcartFn()
     },
     shopcartFn(){   //重新对商品列表复制
         let selectshopList = [];
-        this.data.commodityJsonList.forEach(item=>{   //遍历取出已经在界面上加过的商品
+        this.data.productList.forEach(item=>{   //遍历取出已经在界面上加过的商品
             item.goods.forEach(childItem=>{
                 if(childItem.quantity>0){
+                    childItem['sumtotalPrice'] = (childItem.price*childItem.quantity).toFixed(2)
                     selectshopList.push(childItem)
                 }
             })
@@ -165,8 +174,10 @@ Page({
         let shoppriceList = [];
         let shopSum,shoppricesum=0;
         selectshopList.forEach(item=>{
+            let sum = (item.price*item.quantity).toFixed(2)
             shoptotalList.push(item.quantity);   //取出商品数量
-            shoppriceList.push(item.price*item.quantity);    //商品价格总和
+            shoppriceList.push(JSON.parse(sum));    //商品价格总和
+
         })
         if(selectshopList.length == 0){
             this.hideModal()
@@ -180,9 +191,8 @@ Page({
         shopSum = shoptotalList.reduce((n,m)=>{
             return n + m;
         })
-        shoppricesum = shoppriceList.reduce((n,m)=>{
-            return n + m;
-        })
+        shoppricesum = this.sum(shoppriceList)
+        console.log('selectshopList',selectshopList)
         this.setData({
             interfaceList:selectshopList,
             shoptotal:shopSum,
@@ -190,7 +200,7 @@ Page({
         })
     },
     emptyshoppingcart(){    //清空购物车
-        this.data.commodityJsonList.forEach((item,index)=>{
+        this.data.productList.forEach((item,index)=>{
             item.goods.forEach((childItem,cindex)=>{
                 childItem['quantity'] = 0
             })
@@ -199,7 +209,7 @@ Page({
             interfaceList:[],
             shoptotal:0,
             shoppricesum:0,
-            commodityJsonList:this.data.defaultcommodityJsonList
+            productList:this.data.defaultcommodityJsonList
         })
         this.hideModal()
     },
@@ -209,15 +219,14 @@ Page({
             mask: true
         });
         let interfaceList = []
-        console.log('this.data.interfaceList: ', this.data.interfaceList);
         this.data.interfaceList.forEach(item=>{
-            
             let interfaceDict = {};
             interfaceDict['name'] = item.name
             interfaceDict['price'] = item.price
             interfaceDict['quantity'] = item.quantity
             interfaceDict['cindex'] = item.cindex
             interfaceDict['image'] = item.cover
+            interfaceDict['id'] = item.id
             interfaceList.push(interfaceDict)
         })
         interfaceList= JSON.stringify(interfaceList)
@@ -258,7 +267,7 @@ Page({
     },
     VerticalMain(e) {
         let that = this;
-        let list = this.data.commodityJsonList.goods;
+        let list = this.data.commodityJsonList;
         let tabHeight = 0;
         if (this.data.load) {
             for (let i = 0; i < list.length; i++) {
@@ -292,7 +301,7 @@ Page({
             success (res) {
                 if (res.code) {
                     wx.request({
-                        url: 'http://47.111.129.112/api.php/paotui/app/login',
+                        url: 'https://www.sudaone.cn/api.php/paotui/app/login',
                         method: "POST",
                         data: {
                             code: res.code,
@@ -315,4 +324,11 @@ Page({
             url: '../prductDetails/productDetail?productId='+e.currentTarget.dataset.foodsdata.id
           })
     },
+    sum(arr) {  //数组求和
+        var s = 0;
+        for (var i=arr.length-1; i>=0; i--) {
+            s += arr[i];
+        }
+        return s.toFixed(2);
+    }
 })

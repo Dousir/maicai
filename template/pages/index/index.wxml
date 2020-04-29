@@ -1,5 +1,5 @@
 <cu-custom bgColor="bg-gradual-green">
-  <view slot="content">豆森科技</view>
+  <view slot="content">修水喜乐送线上超市</view>
 </cu-custom>
 <!-- <view class="bg-img bg-mask padding-tb-xl" style="background-image: url('https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg');height: 300rpx;">
   <view class="padding-xl text-white">
@@ -14,7 +14,7 @@
 <view class="VerticalBox">
 <!-- 左侧一级导航 -->
   <scroll-view class="VerticalNav nav" scroll-y scroll-with-animation scroll-top="{{VerticalNavTop}}"  style="height:calc(100vh - 60px)">
-    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{commodityJsonList}}" wx:for-index='index' wx:key='key' wx:for-item="item" bindtap='tabSelect' data-id="{{index}}">
+    <view class="cu-item {{index==TabCur?'text-green cur':''}}" wx:for="{{productList}}" wx:for-index='index' wx:key='key' wx:for-item="item" bindtap='tabSelect' data-id="{{index}}">
      {{item.name}}
     </view>
   </scroll-view>
@@ -28,29 +28,30 @@
     </view>
   </view> -->
   <scroll-view class="VerticalMain" scroll-y scroll-with-animation style="height:calc(100vh - 60px)" scroll-into-view="main-{{MainCur}}" bindscroll="VerticalMain">
-    <view class="padding-top10 padding-left vericalmainItem" wx:key='childKey' wx:for="{{commodityJsonList}}" wx:for-item="item" id="main-{{childIndex}}" wx:for-index='childIndex'>
+    <view class="padding-top10 padding-left vericalmainItem" wx:key='childKey' wx:for="{{productList}}" wx:for-item="item" id="main-{{childIndex}}" wx:for-index='childIndex'>
       <view class='cu-bar solid-bottom bg-white'>
         <view class='action'>
           <text class='cuIcon-title text-green'></text> {{item.name}} </view>
       </view>
       <view class="cu-list menu-avatar">
-        <view class="cu-item padding-bottom-xs"  wx:for="{{item.goods}}" wx:key='itemKey' wx:for-index='itemkey'   wx:for-item='childItem' >
-          <view class="cu-avatar lg" bindtap='toProductDetail' data-foodsData="{{childItem}}" style="background-image:url({{childItem.cover}});"></view>
-          <view class="content">
-            <view class="text-black" bindtap='toProductDetail' data-foodsData="{{childItem}}" >{{childItem.name}}</view> 
-            <view class="text-gray text-sm flex" bindtap='toProductDetail' data-foodsData="{{childItem}}" >
+        <view class="cu-item padding-bottom-xs productDetail-box"  wx:for="{{item.goods}}" wx:key='itemKey' wx:for-index='itemkey'   wx:for-item='childItem' >
+          <!-- <view class=" productAcatar" bindtap='toProductDetail' data-foodsData="{{childItem}}" lazy-load="{{true}}" style="background-image:url({{childItem.cover}});"></view> -->
+          <image class=" productAcatar" src="{{childItem.cover}}" lazy-load="{{true}}" bindtap='toProductDetail' data-foodsData="{{childItem}}" />
+          <view class="productText-box">
+            <view class="text-black">{{childItem.name}}</view> 
+            <view class="text-gray text-sm flex"  >
                 月销{{childItem.sales}}
             </view>
             <view class='commodity-price'>
-                <text class="text-price text-red" bindtap='toProductDetail' data-foodsData="{{childItem}}" >{{childItem.price}}</text> 
+                <text class="text-price text-red" >{{childItem.price}}</text> 
                 <view class='commodity-num'>
                     <view wx:if="{{childItem.quantity>0}}">
-                        <button class="cu-btn round sm  icon" bindtap='commodityCut' data-pidx='{{childItem.pid}}' data-cidx='{{itemkey}}'>
+                        <button class="cu-btn round sm  icon" bindtap='commodityCut' data-pid='{{item.cate_id}}' data-cid='{{childItem.id}}'>
                             <text class="cuIcon-move lg text-black"></text>
                         </button>
                     <text class='commodity-amount'>{{childItem.quantity}}</text>
                     </view>
-                    <button class="cu-btn icon sm bg-olive " bindtap="commodityAdd" data-pidx='{{childItem.pid}}' data-cidx='{{itemkey}}'>
+                    <button class="cu-btn icon sm bg-olive " bindtap="commodityAdd" data-pid='{{item.cate_id}}' data-cid='{{childItem.id}}'>
                     
                         <text class="cuIcon-add lg text-white"></text>
                     </button>
@@ -78,8 +79,9 @@
       <text class="deliveryFee-text">另需配送费<text class="text-price text-red">0</text></text>
     </view>
   </view>
-  <view  class="cu-btn f_l  shopcart-pay-btn bg-green button-hover" wx:if="{{interfaceList.length>0}}" bindtap='tojiesuan'>去结算</view>
-  <view class="qisongjia" wx:if="{{interfaceList.length<=0}}">10元起送</view>
+  <view  class="cu-btn f_l  shopcart-pay-btn bg-green button-hover" bindtap='tojiesuan'>去结算</view>
+  <!-- <view  class="cu-btn f_l  shopcart-pay-btn bg-green button-hover" wx:if="{{shoppricesum>=30}}" bindtap='tojiesuan'>去结算</view> -->
+  <!-- <view class="qisongjia" wx:if="{{shoppricesum<30}}">30元起送</view> -->
   <view class="cu-modal bottom-modal {{modalName=='bottomModal'?'show':''}}" bindtap="hideModal">
     <view class="cu-dialog" catchtap>
       <view class="shopcart-main-box">
@@ -95,11 +97,11 @@
         </view>
         <scroll-view class="shopcart-main-list-box" scroll-y scroll-with-animation>
           <view class="cu-item padding-bottom-xs shopcart-main-list solid-bottom" wx:for="{{interfaceList}}" wx:for-item='item'  wx:key="key" >
-            <view class="shopcart-main-list-img" style="background-image:url({{item.image}});"></view>
+            <image class="shopcart-main-list-img" src="item.cover" />
             <view class="content shopcart-main-list-content">
               <view class="text-black shopcart-main-list-content-black">{{item.name}}</view>
               <view class='commodity-price shopcart-main-list-content-price'>
-                  <text class="text-price text-red">{{item.price*item.quantity}}</text>
+                  <text class="text-price text-red">{{item.sumtotalPrice}}</text>
                   <view class='commodity-num'>
                       <view>
                           <button class="cu-btn round sm  icon" bindtap='shopcartcut' data-item='{{item}}'>

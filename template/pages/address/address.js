@@ -21,7 +21,6 @@ Page({
    */
   onLoad: function (options) {
     if(options.modifyData != undefined && options.modifyData != 'undefined'){
-      console.log('options.modifyData: ', options.modifyData);
       let modifyData = JSON.parse(options.modifyData)
       console.log('modifyData: ', modifyData);
       if(modifyData.default == 1){
