@@ -18,7 +18,7 @@ Page({
         productList:[], //数据列表
     },
     onLoad() {
-        this.getUserInfo()
+        // this.getUserInfo()
         this.getcatesList()
     },
     onReady() {
@@ -27,7 +27,6 @@ Page({
         https.GET({
             API_URL: "/api.php/paotui/product/cates",
             success: (res) => {
-                console.log('res.data.data: ', res.data.data);
                 res.data.data.forEach((item,index)=>{
                     this.getsub_list(item,index)
                 })
@@ -192,7 +191,6 @@ Page({
             return n + m;
         })
         shoppricesum = this.sum(shoppriceList)
-        console.log('selectshopList',selectshopList)
         this.setData({
             interfaceList:selectshopList,
             shoptotal:shopSum,
@@ -307,6 +305,7 @@ Page({
                             code: res.code,
                         },
                         success: function(res) {
+                            console.log('res: ', res);
                             wx.setStorage({
                                 key:"userid",
                                 data:res

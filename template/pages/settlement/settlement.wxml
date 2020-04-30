@@ -11,7 +11,9 @@
         </view>
         <view class="receipt-main-text-mian"  bindtap='showModal' data-target="RadioModal" wx:if="{{receipt!=0}}" >
           <view >
-            <view class="receipt-main-text-mian-top">{{addressDefault.user_address}}--{{addressDefault.user_address_more}}</view>
+            <view class="receipt-main-text-mian-top">
+              <text wx:if="{{addressList.length !=0}}">{{addressDefault.user_address}}--{{addressDefault.user_address_more}}</text>
+              <text wx:else>请先添加收货地址</text></view>
             <view class="receipt-main-text-mian-bottom">
               <text class="receipt-name">{{addressDefault.user_name}}</text>
               <text class="receipt-pohone">{{addressDefault.user_mobile}}</text>

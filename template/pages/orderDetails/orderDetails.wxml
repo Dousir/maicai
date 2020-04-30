@@ -4,10 +4,24 @@
 	<view slot="content">订单详情</view>
 </cu-custom>
 <view class="commodity-box bg-white">
-    <view class="commodity-list-title solid-bottom">喜乐送线上超市</view>
+    <view class="commodity-list-title solid-bottom">
+      <text >喜乐送线上超市</text>
+      <view>
+        <view wx:if='{{orderDetail.pay_status_info == "未支付"}}'>
+          <botton class="cu-btn round line-grey orderList-main-operating-btn" role='button' aria-disabled='flse' data-item='1' wx:if="{{orderDetail.status != 4}}" data-target="DialogModal1"  bindtap="showModal">取消订单</botton>
+          <botton class="cu-btn round bg-red orderList-main-operating-btn" role='button' aria-disabled='flse' bindtap="foshop"  wx:if="{{orderDetail.status != 4}}">付款</botton>
+          <text class="cu-tag line-grey" wx:if="{{orderDetail.status == 4}}">已取消</text>
+        </view>
+        <view wx:if="{{orderDetail.pay_status_info == '已支付'}}">
+          <!-- <view class="text-green text-center">已完成</view> -->
+          <botton class="cu-btn round line-grey orderList-main-operating-btn" wx:if="{{orderDetail.status != 2}}" role='button' aria-disabled='flse' data-target="DialogModal1" bindtap='showModal' data-item='0'>申请退款</botton>
+          <text class="cu-tag line-grey" wx:if="{{orderDetail.status == 2}}">退款中</text>
+        </view>
+      </view>
+    </view>
     <view class='commodity-list-box '>
       <view class="solid-bottom commodity-list-box-b">
-        <view class="commodity-list-item "wx:key='key' wx:for="{{orderDetail.goods}}">
+        <view class="commodity-list-item " wx:key='key' wx:for="{{orderDetail.goods}}">
           <view class="commodity-item-left">
             <view class="commodity-item-left-img" style="background-image:url(https://www.sudaone.cn{{item.goods_img}});"></view>
             <view class="commodity-item-left-text">
@@ -17,7 +31,7 @@
             </view>
           </view>
           <view class="commodity-item-right">
-            <text class="text-price commodity-item-price">{{item.goods_price/100}}</text>
+            <text class="text-price commodity-item-price">{{item.goods_price}}</text>
           </view>
         </view>
       </view>
@@ -76,3 +90,24 @@
     </view>
   </view>
   <view class="tips">到底了~~</view>
+
+<view class="cu-modal {{modalName=='DialogModal1'?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class="content">{{modalTitle}}</view>
+      <view class="action" bindtap="hideModal">
+        <text class="cuIcon-close text-red"></text>
+      </view>
+    </view>
+    <view class="padding-xl">
+      {{modaltext}}
+    </view>
+    <view class="cu-bar bg-white justify-end">
+      <view class="action">
+        <button class="cu-btn line-green text-green" bindtap="hideModal">取消</button>
+        <button class="cu-btn bg-green margin-left" bindtap="requestRefund">确定</button>
+
+      </view>
+    </view>
+  </view>
+</view>

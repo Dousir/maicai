@@ -27,6 +27,8 @@
   text-align: center;
   display: flex;
   align-items: center;
+  padding-left: 10rpx;
+  text-align: center;
 }
 .cuIcon-write-icon{
   font-size: 40rpx;

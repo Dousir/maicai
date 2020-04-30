@@ -8,6 +8,8 @@
 .commodity-list-title{
   padding: 20rpx 0 20rpx 0;
   color: #656667;
+  display: flex;
+  justify-content: space-between;
 }
 .commodity-list-box{
   padding: 20rpx 0 5rpx 0;
@@ -94,7 +96,7 @@
   margin-bottom: 20rpx;
 }
 .order-info-item-left{
-  width: 120rpx;
+  width: 125rpx;
   margin-right: 10rpx;
   color: #666;
 }

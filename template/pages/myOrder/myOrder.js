@@ -35,7 +35,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.setData({
+      page:1
+    })
+    this.getOrderList()
   },
 
   /**
@@ -45,6 +48,12 @@ Page({
 
   },
   getOrderList(){   //获取订单列表
+    // status:1、2、4、8分别代表的状态
+    // 1、已经下单，发货中
+    // 2、申请退款中，取消中
+    // 3、已退款，已取消
+    // 8、已完成
+
     let params = {
       page:this.data.page
     }
@@ -54,15 +63,13 @@ Page({
       success: (res) => {
         let orderImg = []
         res.data.data.data.forEach(item=>{
-          console.log('item: ', item.goods[0]);
           orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
         })
-        console.log('orderImg: ', orderImg);
-          this.setData({
-            orderImg:orderImg,
-            orderList:res.data.data.data,
-            last_page:res.data.data.last_page
-          })
+        this.setData({
+          orderImg:orderImg,
+          orderList:res.data.data.data,
+          last_page:res.data.data.last_page
+        })
       },
       fail: function () {
         console.log()
@@ -118,7 +125,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getOrderList()
   },
 
   /**
@@ -140,9 +147,7 @@ Page({
         API_URL: "/api.php/paotui/order/my_orders",
         success: (res) => {
           res.data.data.data.forEach(item=>{
-            console.log('item: ', item.goods[0]);
             if(item.goods[0] != undefined){
-              console.log(111)
               this.data.orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
             }
           })
@@ -154,7 +159,6 @@ Page({
             orderList:this.data.orderList,
             last_page:res.data.data.last_page
           })
-          console.log(this.data.orderImg)
         },
         fail: function () {
           console.log()

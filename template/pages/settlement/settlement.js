@@ -66,7 +66,16 @@ Page({
         let params = {}
         params['goods'] = goods
         params['user_address_id'] = userAddressId
+        console.log('userAddressId: ', userAddressId);
         params['remark'] = '' 
+        if(userAddressId == 0){
+            wx.showToast({
+                title: '请先添加收货地址',
+                icon: 'none',
+                duration: 2000
+            })
+            return
+        }
         https.POST({
             params: params,
             API_URL: '/api.php/paotui/order/shop',
@@ -74,7 +83,7 @@ Page({
                 this.fopay(res.data.data.id)
             },
             fail: function (res) {}
-          })
+        })
     },
     fopay(data){    //支付接口
         console.log('data: ', data);
@@ -95,6 +104,19 @@ Page({
                     'signType': 'MD5',
                     'paySign': res.data.data.sign,      //签名,
                     'success':function(res){
+                        if(res.errMsg == 'requestPayment:ok'){
+                            wx.navigateTo({
+                                url:'../index/index',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+                                success:function(){
+                                },        //成功后的回调；
+                                fail:function(){
+                    
+                                },          //失败后的回调；
+                                complete:function(){
+                                    wx.hideLoading()
+                                },      //结束后的回调(成功，失败都会执行)
+                            })
+                        }
                         console.log('res1:', res);
                     },
                     'fail':function(res){
@@ -103,7 +125,6 @@ Page({
                     },
                     'complete':function(res){
                         console.log('res3:', res);
-
                     }
                 })
             },
@@ -132,20 +153,23 @@ Page({
         https.GET({
             API_URL: "api.php/paotui/user/get_user_address_list",
             success: (res) => {
-                console.log('res12: ', res);
+                
                 let resList = res.data.data
+                console.log('resList: ', resList);
                 let defaultAddress = {}
-                resList.forEach(item=>{
-                    if(item.default == 1){
-                        defaultAddress = item
-                    }
-                })
-                console.log(defaultAddress)
-                this.setData({
-                    addressList:resList,
-                    addressDefault:defaultAddress,
-                    addressId:JSON.parse(defaultAddress.id)
-                })
+                if(resList.length != 0){
+                    resList.forEach(item=>{
+                        if(item.default == 1){
+                            defaultAddress = item
+                        }
+                    })
+                    this.setData({
+                        addressList:resList,
+                        addressDefault:defaultAddress,
+                        addressId:JSON.parse(defaultAddress.id)
+                    })
+                }
+                
             },
             fail: function () {
                 console.log()
@@ -154,11 +178,8 @@ Page({
     },
     getTimeFn(){
         var date = new Date();
-        console.log('date: ', date);
         var hour=date.getHours();
-        console.log('hour: ', hour);
         var minute=date.getMinutes();
-        console.log('minute: ', minute);
         let dispatchTime = (hour+1)+':'+minute
         if(hour>=20){
             dispatchTime = '明天早晨9点'

@@ -5,9 +5,9 @@
 </cu-custom>
 <noneOrder wx:if='{{orderList.length<1}}'></noneOrder>
 <view class="orderList-box">
-  <view class="orderList-item"  wx:for="{{orderList}}" wx:key="{{key}}" wx:for-index='index'>
+  <view class="orderList-item"  wx:for="{{orderList}}" wx:key="key" wx:for-index='index'>
     <view class="orderList-item-title solid-bottom">
-      <text class="orderList-item-title-name ">{{item.pay_status_info}}</text>
+      <text class="orderList-item-title-name ">{{item.pay_status_info}}  <text class="cu-tag line-grey orderList-item-title-info" wx:if="{{item.status == '4'}}">{{item.status_info}}</text></text>
       <text class="orderList-item-title-tips">{{item.create_time}}</text>
     </view>
     <view class="orderList-main">
@@ -23,14 +23,7 @@
         </view>
         <view class="orderList-main-operating">
           <view class="orderList-main-operating-price">总价：<text class="text-price ">{{item.order_price}}</text></view>
-          <view wx:if='{{item.pay_status_info == "未支付"}}'>
-            <botton class="cu-btn round line-grey orderList-main-operating-btn" role='button' aria-disabled='flse'>取消订单</botton>
-            <botton class="cu-btn round bg-red orderList-main-operating-btn" role='button' aria-disabled='flse'>付款</botton>
-          </view>
-          <view wx:if="{{item.pay_status_info == '已支付'}}">
-            <!-- <view class="text-green text-center">已完成</view> -->
-            <botton class="cu-btn round line-grey orderList-main-operating-btn" role='button' aria-disabled='flse' bindtap='requestRefund'>申请退款</botton>
-          </view>
+          
         </view>
       </view>
     </view>

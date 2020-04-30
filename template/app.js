@@ -14,7 +14,6 @@ App({
   userlogin:function(){
     wx.login({
       success (res) {
-        console.log('res:',res)
           if (res.code) {
             wx.request({
                 url: 'https://www.sudaone.cn/api.php/paotui/app/login',
@@ -37,12 +36,11 @@ App({
     })
   },
   onLaunch: function() {
+    this.userlogin()
     // 展示本地存储能力
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
-
-
     // 获取系统状态栏信息
     wx.getSystemInfo({
       success: e => {

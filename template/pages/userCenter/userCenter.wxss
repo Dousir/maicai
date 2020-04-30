@@ -23,3 +23,9 @@
   widows: 100%;
   height: 100%;
 }
+.userinfo-username{
+  color: #fff;
+}
+.UCenter-bg{
+  background-size: 100% 100%;
+}
