@@ -156,6 +156,7 @@
   justify-content: space-between;
   max-height: 250rpx;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 .address-top{
   font-size: 28rpx;

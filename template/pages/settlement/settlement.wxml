@@ -62,7 +62,7 @@
   </view>
   <view class="note-box bg-white">
     <view class="note-main-title">备注</view>
-    <textarea class="note-input"></textarea>
+    <textarea class="note-input" bindinput='getNoteText'></textarea>
   </view>
 </view>
 <view class="pay-box">
@@ -79,7 +79,7 @@
 <view class="cu-modal {{modalName=='RadioModal'?'show':''}}" bindtap="hideModal">
   <view class="cu-dialog" catchtap>
       <view class="cu-list menu text-left address-box"  scroll-y scroll-with-animation>
-        <view class="cu-item address-item-list" wx:for="{{addressList}}" wx:key='key' bindtap='clickaddress' wx:for-item="item" data-item = "{{item}}">
+        <view class="cu-item address-item-list"  wx:for="{{addressList}}" wx:key='key' bindtap='clickaddress' wx:for-item="item" data-item = "{{item}}">
           <view class='address'>
             <view class="address-top">{{item.user_address}}--{{item.user_address_more}}</view>
             <view class="address-bottom">
@@ -93,7 +93,7 @@
         </view>
       </view>
       <view class="addAddress" bindtap='addAddressFn'>
-        <text class="cuIcon-roundadd addAddress-icon line-green"></text>
+        <text class="cuIcon-roundadd addAddress-icon line-green" ></text>
         新增收货地址
       </view>
   </view>

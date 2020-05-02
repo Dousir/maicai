@@ -14,6 +14,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+  });
     this.getAddressList()
   },
 
@@ -24,22 +28,15 @@ Page({
 
   },
   getAddressList(){
-    let that = this;
     https.GET({
       API_URL: "api.php/paotui/user/get_user_address_list",
       success: (res) => {
-          console.log('res: ', res);
-          if(res.data.code == 1111){
-            console.log(1)
-            console.log(app)
-            app.userlogin()
-            //that.getAddressList()
-          }else{
+          if(res.data.code == 0){
+            wx.hideLoading()
             this.setData({
               addressList:res.data.data
             })
           }
-          
       },
       fail: function () {
         console.log()

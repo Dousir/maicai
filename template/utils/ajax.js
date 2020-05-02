@@ -20,7 +20,6 @@ function POST(requestHandler) {
 }
 const reqQueue = []
 function request(method, requestHandler) {
-  console.log('requestHandler: ', requestHandler);
   //注意：可以对params加密等处理  
   var params = requestHandler.params;
   var API_URL = requestHandler.API_URL;
@@ -35,7 +34,6 @@ function request(method, requestHandler) {
       // 默认值
     }, // 设置请求的 header  
     success: function (res) {
-      console.log('res: ', res);
       if(res.data.code == 1111){
         reqQueue.push(request(method, requestHandler))
         wx.login({

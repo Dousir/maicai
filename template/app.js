@@ -11,36 +11,11 @@ App({
         }
     })
   },
-  userlogin:function(){
-    wx.login({
-      success (res) {
-          if (res.code) {
-            wx.request({
-                url: 'https://www.sudaone.cn/api.php/paotui/app/login',
-                method: "POST",
-                data: {
-                    code: res.code,
-                },
-                success: function(res) {
-                  wx.setStorage({
-                    key:"userid",
-                    data:res
-                  })
-                }
-            })
-          }
-          else {
-              console.log('登录失败！' + res.errMsg)
-          }
-      }
-    })
-  },
   onLaunch: function() {
-    this.userlogin()
     // 展示本地存储能力
-    var logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+    // var logs = wx.getStorageSync('logs') || []
+    // logs.unshift(Date.now())
+    // wx.setStorageSync('logs', logs)
     // 获取系统状态栏信息
     wx.getSystemInfo({
       success: e => {
@@ -59,7 +34,6 @@ App({
           console.log('res2: ', res);
       }
   })
-    
   },
   globalData: {
     userInfo: null

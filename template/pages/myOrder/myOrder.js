@@ -21,6 +21,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
+    });
     this.getOrderList()
   },
 
@@ -38,6 +43,10 @@ Page({
     this.setData({
       page:1
     })
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
+    });
     this.getOrderList()
   },
 
@@ -53,7 +62,6 @@ Page({
     // 2、申请退款中，取消中
     // 3、已退款，已取消
     // 8、已完成
-
     let params = {
       page:this.data.page
     }
@@ -61,15 +69,19 @@ Page({
       params: params,
       API_URL: "/api.php/paotui/order/my_orders",
       success: (res) => {
-        let orderImg = []
-        res.data.data.data.forEach(item=>{
-          orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
-        })
-        this.setData({
-          orderImg:orderImg,
-          orderList:res.data.data.data,
-          last_page:res.data.data.last_page
-        })
+        if(res.data.code == 0){
+          
+          let orderImg = []
+          res.data.data.data.forEach(item=>{
+            orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
+          })
+          this.setData({
+            orderImg:orderImg,
+            orderList:res.data.data.data,
+            last_page:res.data.data.last_page
+          })
+          wx.hideLoading()
+        }
       },
       fail: function () {
         console.log()
@@ -142,23 +154,31 @@ Page({
       let params = {
         page : this.data.page
       }
+      wx.showLoading({
+        title: '加载中',
+        mask: true,
+      });
       https.POST({
         params: params,
         API_URL: "/api.php/paotui/order/my_orders",
         success: (res) => {
-          res.data.data.data.forEach(item=>{
-            if(item.goods[0] != undefined){
-              this.data.orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
-            }
-          })
-          res.data.data.data.forEach(item=>{
-            this.data.orderList.push(item)
-          })
-          this.setData({
-            orderImg:this.data.orderImg,
-            orderList:this.data.orderList,
-            last_page:res.data.data.last_page
-          })
+          if(res.data.code == 0){
+            
+            res.data.data.data.forEach(item=>{
+              if(item.goods[0] != undefined){
+                this.data.orderImg.push('https://www.sudaone.cn'+item.goods[0].goods_img)
+              }
+            })
+            res.data.data.data.forEach(item=>{
+              this.data.orderList.push(item)
+            })
+            this.setData({
+              orderImg:this.data.orderImg,
+              orderList:this.data.orderList,
+              last_page:res.data.data.last_page
+            })
+            wx.hideLoading()
+          }
         },
         fail: function () {
           console.log()
@@ -169,7 +189,7 @@ Page({
         title: '没有更多订单了',
         // icon: 'success',
         duration: 2000
-    })
+      })
     }
   },
 

@@ -18,8 +18,12 @@ Page({
         productList:[], //数据列表
     },
     onLoad() {
-        // this.getUserInfo()
+        wx.showLoading({
+            title: '加载中...',
+            mask: true
+        });
         this.getcatesList()
+        this.getUserInfo()
     },
     onReady() {
     },
@@ -28,6 +32,10 @@ Page({
             API_URL: "/api.php/paotui/product/cates",
             success: (res) => {
                 res.data.data.forEach((item,index)=>{
+                    wx.showLoading({
+                        title: '加载中...',
+                        mask: true
+                    });
                     this.getsub_list(item,index)
                 })
             },
@@ -37,29 +45,28 @@ Page({
         })
     },
     getsub_list(data,index){  //根据分类获取产品
-        wx.showLoading({
-            title: '加载中...',
-            mask: true
-        });
         https.GET({
             API_URL: "/api.php/paotui/product/sub_list?cid="+data.cate_id,
             success: (res) => {
-                res.data.data.forEach(item=>{
-                    item['quantity'] = 0;
-                    item['pid'] = data.cate_id
-                })
-                let params = {
-                    name:data.name,
-                    cate_id:data.cate_id,
-                    goods:res.data.data
+                if(res.data.code == 0){
+                    res.data.data.forEach(item=>{
+                        item['quantity'] = 0;
+                        item['pid'] = data.cate_id
+                    })
+                    let params = {
+                        name:data.name,
+                        cate_id:data.cate_id,
+                        goods:res.data.data
+                    }
+                    this.data.productList.push(params)
+                    this.data.defaultcommodityJsonList.push(params)
+                    this.setData({
+                        productList:this.data.productList,
+                        defaultcommodityJsonList: this.data.defaultcommodityJsonList
+                    })
+                    wx.hideLoading()
                 }
-                this.data.productList.push(params)
-                this.data.defaultcommodityJsonList.push(params)
-                this.setData({
-                    productList:this.data.productList,
-                    defaultcommodityJsonList: this.data.defaultcommodityJsonList
-                })
-                wx.hideLoading()
+                
             },
             fail: function () {
               console.log()

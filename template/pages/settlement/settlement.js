@@ -14,6 +14,7 @@ Page({
         addressDefault:{},
         dispatchTime:'',    //派送时间
         addressId:0,
+        notetext:''
     },
 
     /**
@@ -66,8 +67,7 @@ Page({
         let params = {}
         params['goods'] = goods
         params['user_address_id'] = userAddressId
-        console.log('userAddressId: ', userAddressId);
-        params['remark'] = '' 
+        params['remark'] = this.data.notetext
         if(userAddressId == 0){
             wx.showToast({
                 title: '请先添加收货地址',
@@ -86,7 +86,6 @@ Page({
         })
     },
     fopay(data){    //支付接口
-        console.log('data: ', data);
         let params = {
             order_id:JSON.parse(data)
         }
@@ -97,7 +96,6 @@ Page({
                 console.log('res: ', res.data.data);
                 wx.requestPayment(
                     {
-                    
                     'timeStamp': JSON.stringify(res.data.data.timeStamp),   //时间戳
                     'nonceStr': res.data.data.nonceStr,     //随机数,
                     'package': res.data.data.package,       //统一下单接口返回的 prepay_id 参数值,
@@ -105,16 +103,13 @@ Page({
                     'paySign': res.data.data.sign,      //签名,
                     'success':function(res){
                         if(res.errMsg == 'requestPayment:ok'){
-                            wx.navigateTo({
-                                url:'../index/index',  //跳转页面的路径，可带参数 ？隔开，不同参数用 & 分隔；相对路径，不需要.wxml后缀
+                            wx.redirectTo({
+                                url:'../myOrder/myOrder',  
                                 success:function(){
-                                },        //成功后的回调；
+                                },        
                                 fail:function(){
                     
-                                },          //失败后的回调；
-                                complete:function(){
-                                    wx.hideLoading()
-                                },      //结束后的回调(成功，失败都会执行)
+                                },      
                             })
                         }
                         console.log('res1:', res);
@@ -150,30 +145,39 @@ Page({
         })
     },
     getAddressList(){   //获取用户收货地址
+        wx.showLoading({
+            title: '加载中...',
+            mask: true
+        });
         https.GET({
             API_URL: "api.php/paotui/user/get_user_address_list",
             success: (res) => {
-                
-                let resList = res.data.data
-                console.log('resList: ', resList);
-                let defaultAddress = {}
-                if(resList.length != 0){
-                    resList.forEach(item=>{
-                        if(item.default == 1){
-                            defaultAddress = item
-                        }
-                    })
-                    this.setData({
-                        addressList:resList,
-                        addressDefault:defaultAddress,
-                        addressId:JSON.parse(defaultAddress.id)
-                    })
+                if(res.data.code == 0){
+                    let resList = res.data.data
+                    let defaultAddress = {}
+                    if(resList.length != 0){
+                        resList.forEach(item=>{
+                            if(item.default == 1){
+                                defaultAddress = item
+                            }
+                        })
+                        this.setData({
+                            addressList:resList,
+                            addressDefault:defaultAddress,
+                            addressId:JSON.parse(defaultAddress.id)
+                        })
+                    }
+                    wx.hideLoading()
                 }
-                
             },
             fail: function () {
                 console.log()
             }
+        })
+    },
+    getNoteText(e){
+        this.setData({
+            notetext:e.detail.value
         })
     },
     getTimeFn(){
