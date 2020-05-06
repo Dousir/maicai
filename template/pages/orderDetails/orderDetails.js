@@ -20,18 +20,17 @@ Page({
    */
   onLoad: function (options) {
     // console.log('options: ', JSON.parse(options));
-    let getStorageOrderData =  wx.getStorageSync('orderDrtail')
-    console.log('getStorageOrderData: ', getStorageOrderData);
-    this.setData({
-      orderDetail:getStorageOrderData
-    })
+    
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    let getStorageOrderData =  wx.getStorageSync('orderDrtail')
+    this.setData({
+      orderDetail:getStorageOrderData
+    })
   },
 
   callbusiness(){
@@ -39,6 +38,7 @@ Page({
   },
   foshop(){
     let orderDetail = this.data.orderDetail;
+    console.log('orderDetail: ', orderDetail);
     let userAddressId = orderDetail.user_address_id;
     let params = {}
     let goods = {}
@@ -49,19 +49,20 @@ Page({
     params['goods'] =goods
     params['user_address_id'] = userAddressId
     params['remark'] = '' 
-    https.POST({
-        params: params,
-        API_URL: '/api.php/paotui/order/shop',
-        success: (res) => {
-          this.fopay(res.data.data.id)
-        },
-        fail: function (res) {}
-    })
+    // https.POST({
+    //     params: params,
+    //     API_URL: '/api.php/paotui/order/shop',
+    //     success: (res) => {
+    //       this.fopay(res.data.data.id)
+    //     },
+    //     fail: function (res) {}
+    // })
   },
   fopay(data){    //支付接口
     console.log('data: ', data);
+    let orderDetail = this.data.orderDetail
     let params = {
-        order_id:JSON.parse(data)
+        order_id:JSON.parse(orderDetail.order_id)
     }
     https.POST({
         params: params,
@@ -79,11 +80,21 @@ Page({
                     console.log('res1:', res);
                 },
                 'fail':function(res){
-                    console.log('res2:', res);
+                    
 
                 },
                 'complete':function(res){
-                    console.log('res3:', res);
+                  wx.redirectTo({
+                    url:'../myOrder/myOrder',
+                    success:function(){
+                    },        //成功后的回调；
+                    fail:function(){
+              
+                    },          //失败后的回调；
+                    complete:function(){
+                        wx.hideLoading()
+                    },      //结束后的回调(成功，失败都会执行)
+                  })
 
                 }
             })

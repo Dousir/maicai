@@ -23,41 +23,38 @@ function request(method, requestHandler) {
   //注意：可以对params加密等处理  
   var params = requestHandler.params;
   var API_URL = requestHandler.API_URL;
-  const value = wx.getStorageSync('userid')
+  let userToken = getApp().globalData.userInfoData.token
   wx.request({
     url: `https://www.sudaone.cn/${API_URL}`,
     data: params,
     method: method, 
     header: {
       'content-type': 'application/json',
-      'token': value.data.data.token
+      'token': userToken
       // 默认值
     }, // 设置请求的 header  
     success: function (res) {
       if(res.data.code == 1111){
-        reqQueue.push(request(method, requestHandler))
-        wx.login({
-          success (res) {
-              if (res.code) {
-                wx.request({
-                    url: 'https://www.sudaone.cn/api.php/paotui/app/login',
-                    method: "POST",
-                    data: {
-                        code: res.code,
-                    },
-                    success: function(res) {
-                      wx.setStorage({
-                        key:"userid",
-                        data:res
-                      })
-                    }
-                })
-              }
-              else {
-                  console.log('登录失败！' + res.errMsg)
-              }
-          }
-        })
+          reqQueue.push(request(method, requestHandler))
+          wx.login({
+            success (res) {
+                if (res.code) {
+                  wx.request({
+                      url: 'https://www.sudaone.cn/api.php/paotui/app/login',
+                      method: "POST",
+                      data: {
+                          code: res.code,
+                      },
+                      success: function(res) {
+                        getApp().globalData.userInfoData = res.data.data
+                      }
+                  })
+                }
+                else {
+                    console.log('登录失败！' + res.errMsg)
+                }
+            }
+          })
       }
       //注意：可以对参数解密等处理  
       requestHandler.success(res)
@@ -69,6 +66,7 @@ function request(method, requestHandler) {
       // complete  
     }
   })
+  
 }
 module.exports = {
   GET: GET,

@@ -1,5 +1,8 @@
 //app.js
 App({
+  globalData: {
+    userInfoData:{}
+  },
   callBusiness:function(e){
     wx.makePhoneCall({
         phoneNumber: '0792-7223887',
@@ -12,7 +15,30 @@ App({
     })
   },
   onLaunch: function() {
-    // 展示本地存储能力
+    let that = this
+    // 用户登录
+    wx.login({
+      success (res) {
+          if (res.code) {
+              wx.request({
+                  url: 'https://www.sudaone.cn/api.php/paotui/app/login',
+                  method: "POST",
+                  data: {
+                      code: res.code,
+                  },
+                  success: (res)=> {
+                      that.globalData.userInfoData = res.data.data
+                      // wx.setStorage({
+                      //     key:"userid",
+                      //     data:res
+                      // })
+                  }
+                })
+          } else {
+              console.log('登录失败！' + res.errMsg)
+          }
+      }
+  })
     // var logs = wx.getStorageSync('logs') || []
     // logs.unshift(Date.now())
     // wx.setStorageSync('logs', logs)
@@ -35,7 +61,4 @@ App({
       }
   })
   },
-  globalData: {
-    userInfo: null
-  }
 })

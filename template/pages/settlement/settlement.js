@@ -14,27 +14,30 @@ Page({
         addressDefault:{},
         dispatchTime:'',    //派送时间
         addressId:0,
-        notetext:''
+        notetext:'',
+        optionsData:null
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        this.getTimeFn()
-        this.getAddressList()
-        let interfaceList = JSON.parse(options.data)
         this.setData({
-            interfaceList:interfaceList,
-        });
-        this.totalpriceFn()
+            optionsData:options
+        })
     },
 
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
     onReady: function () {
-
+        this.getTimeFn()
+        this.getAddressList()
+        let interfaceList = JSON.parse(this.data.optionsData.data)
+        this.setData({
+            interfaceList:interfaceList,
+        });
+        this.totalpriceFn()
     },
     
     
@@ -112,14 +115,23 @@ Page({
                                 },      
                             })
                         }
-                        console.log('res1:', res);
                     },
                     'fail':function(res){
-                        console.log('res2:', res);
-
+                        wx.showToast({
+                          title:"您已取消支付",
+                          icon: 'none',//图标，支持"success"、"loading" 
+                          duration: 2000,//提示的延迟时间，单位毫秒，默认：1500 
+                        })
+                        wx.navigateTo({
+                            url:'../index/index',  
+                            success:function(){
+                            },        
+                            fail:function(){
+                
+                            },      
+                        })
                     },
                     'complete':function(res){
-                        console.log('res3:', res);
                     }
                 })
             },

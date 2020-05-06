@@ -17,19 +17,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // this.getUserAddress()
-    try {
-      const value = wx.getStorageSync('userInfo')
-      if (value) {
-        this.setData({
-          userName:value.nickName,
-          userImg:value.avatarUrl
-        })
-        // Do something with return value
-      }
-    } catch (e) {
-      // Do something when catch error
-    }
+   
   },
 
   /**
@@ -80,7 +68,6 @@ Page({
 
   },
   callBusiness(e){
-    console.log(app)
     app.callBusiness()
   },
   /**

@@ -22,18 +22,18 @@ Page({
    */
   onLoad: function (options) {
     
-    wx.showLoading({
-      title: '加载中',
-      mask: true,
-    });
-    this.getOrderList()
+    
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    wx.showLoading({
+      title: '加载中',
+      mask: true,
+    });
+    this.getOrderList()
   },
 
   /**

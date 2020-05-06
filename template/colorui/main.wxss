@@ -1275,10 +1275,10 @@ button.icon.lg {
 	align-items: center
 }
 
-.cu-list.menu-avatar>.cu-item>.cu-avatar {
+/* .cu-list.menu-avatar>.cu-item>.cu-avatar {
 	position: absolute;
 	left: 30rpx
-}
+} */
 
 .cu-list.menu-avatar>.cu-item .flex .text-cut {
 	max-width: 510rpx
@@ -3269,7 +3269,7 @@ scroll-view.cu-steps .cu-item {
 }
 
 .padding-left {
-	padding-left: 30rpx;
+	padding-left: 10rpx;
 }
 
 .padding-left-lg {

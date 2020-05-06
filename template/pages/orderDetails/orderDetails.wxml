@@ -9,7 +9,7 @@
       <view>
         <view wx:if='{{orderDetail.pay_status_info == "未支付"}}'>
           <botton class="cu-btn round line-grey orderList-main-operating-btn" role='button' aria-disabled='flse' data-item='1' wx:if="{{orderDetail.status != 4}}" data-target="DialogModal1"  bindtap="showModal">取消订单</botton>
-          <botton class="cu-btn round bg-red orderList-main-operating-btn" role='button' aria-disabled='flse' bindtap="foshop"  wx:if="{{orderDetail.status != 4}}">付款</botton>
+          <botton class="cu-btn round bg-red orderList-main-operating-btn" role='button' aria-disabled='flse' bindtap="fopay"  wx:if="{{orderDetail.status != 4}}">付款</botton>
           <text class="cu-tag line-grey" wx:if="{{orderDetail.status == 4}}">已取消</text>
         </view>
         <view wx:if="{{orderDetail.pay_status_info == '已支付'}}">

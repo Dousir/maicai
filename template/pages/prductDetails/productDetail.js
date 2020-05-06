@@ -5,19 +5,25 @@ Page({
     cardCur: 0,
     productId:'', //产品id
     swiperList: [],
-    product:{}
+    product:{},
+    productOption:{}
   },
   onLoad(option) {
+    this.setData({
+      productOption:option
+    })
+    // 初始化towerSwiper 传已有的数组名即可
+  },
+  onReady: function () {
     wx.showLoading({
       title: '加载中...',
       mask: true
     });
     this.setData({
-      productId:option.productId
+      productId:this.data.productOption.productId
     })
     this.getProductDetail();
     this.towerSwiper('swiperList');
-    // 初始化towerSwiper 传已有的数组名即可
   },
   getProductDetail(){   //获取产品详细信息
     let productId = this.data.productId
